@@ -6,7 +6,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="33dp"
     android:paddingTop="0dp"
-    android:paddingBottom="33dp"
+    android:paddingBottom="30dp"
 
     android:orientation="vertical" >
 
@@ -17,7 +17,7 @@
 
         android:id="@+id/surveyquestiontext"
 
-        android:text="Is this position offside?"
+        android:text="Is the position offside?"
         />
 
 
