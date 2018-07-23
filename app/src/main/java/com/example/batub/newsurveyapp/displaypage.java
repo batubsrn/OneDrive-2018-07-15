@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -32,8 +34,12 @@ import java.util.List;
 
 public class displaypage extends AppCompatActivity {
 
-    Survey newsurvey2 = new Survey();
+    Survey newsurvey2;
+    Integer question_no;
+    String incNumber;
 
+    FirebaseDatabase database;
+    DatabaseReference dialogreference;
 
 
     Button button7;
@@ -45,6 +51,7 @@ public class displaypage extends AppCompatActivity {
 
 
         button7= (Button) findViewById(R.id.displaytryout);
+        /*
         button7.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -56,50 +63,33 @@ public class displaypage extends AppCompatActivity {
             }
         });
 
+       */
+
         button7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
-                FirebaseDatabase database= FirebaseDatabase.getInstance();
-                DatabaseReference dialogreference;
-
-
-                dialogreference=database.getReference().child("surveys").child("2");
-
-                 dialogreference.addValueEventListener(new ValueEventListener() {
-                     @Override
-                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-
-                         for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                             newsurvey2= (Survey) messageSnapshot.getValue();
-
-                         }
+                database=FirebaseDatabase.getInstance();
+                dialogreference=database.getReference().child("surveys");
 
 
 
 
-                      /*  String str1 =dataSnapshot.getValue(String.class);
-                        String str2 =dataSnapshot.getValue(String.class);
-                        String str3 =dataSnapshot.getValue(String.class);
-                      */
-
-                     }
-
-                     @Override
-                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                     }
-                 });
 
 
                 AlertDialog.Builder mBuilder1=  new AlertDialog.Builder(displaypage.this);
                 View mView= getLayoutInflater().inflate(R.layout.survey_dialog,null);
 
-                TextView mTextView= (TextView) mView.findViewById(R.id.surveyquestiontext);
-                Button answer1but= (Button) mView.findViewById(R.id.answer1button);
-                Button answer2but= (Button) mView.findViewById(R.id.answer2button);
+                TextView mTextView= mView.findViewById(R.id.surveyquestiontext);
+                Button answer1but= mView.findViewById(R.id.answer1button);
+                Button answer2but= mView.findViewById(R.id.answer2button);
+
+                // mTextView.setText(newsurvey2.getQuestion());
+                // answer1but.setText(newsurvey2.getAnswer1());
+                // answer2but.setText(newsurvey2.getAnswer2());
+
+
+
 
 
 

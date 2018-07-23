@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,8 +26,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
 public class MainActivity extends AppCompatActivity {
 
+    int increment;
     private Button button1, button2;
     private EditText editText, editText2,editText3;
     private RecyclerView recyclerView;
@@ -75,11 +79,51 @@ public class MainActivity extends AppCompatActivity {
 
                 refLocation=myDatabase.getReference().child("surveys");
 
-                Survey surveyobject= new Survey(value,value2,value3);
-               // Query incement_query;
-               // int last;
+                Query query=refLocation.orderByKey(); // QUERY
 
-                refLocation.child("2").setValue(surveyobject);
+                ValueEventListener valueEventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        for (DataSnapshot ds: dataSnapshot.getChildren()){
+                            String incNumber=ds.getKey();
+                            increment =Integer.parseInt(incNumber);
+
+                            Log.d("incnumber",incNumber);
+
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                };
+
+                query.addListenerForSingleValueEvent(valueEventListener);
+
+                String incrementString= Integer.toString(increment+1);
+
+
+
+                Survey surveyObject= new Survey(value,value2,value3,increment+1);
+
+                refLocation.child(incrementString).setValue(surveyObject);
+
+                refLocation.child(incrementString).child("id").setValue(incrementString);
+
+
+
+                textView7.setText(incrementString);
+
+
+
+
+
+
+
 
                /* myref2.addValueEventListener(new ValueEventListener() {
                     @Override

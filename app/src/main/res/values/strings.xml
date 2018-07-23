@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">newsurveyapp</string>
     <string name="showdata">display</string>
+    <string name="dialog_popup_question_text">soru buraya</string>
     <string name="title_activity_newdisplaypage">newdisplaypage</string>
 
     <!-- TODO: Remove or change this placeholder text -->

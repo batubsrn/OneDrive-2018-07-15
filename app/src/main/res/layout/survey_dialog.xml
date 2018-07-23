@@ -17,7 +17,7 @@
 
         android:id="@+id/surveyquestiontext"
 
-        android:text="Is the position offside?"
+         android:text="@string/dialog_popup_question_text"
         />
 
 

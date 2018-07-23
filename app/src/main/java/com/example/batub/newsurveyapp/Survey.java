@@ -2,16 +2,28 @@ package com.example.batub.newsurveyapp;
 
 class Survey {
     public String question,answer1,answer2;
+    int id;
 
     public Survey() {
 
 
     }
 
-    public Survey(String question, String answer1, String answer2) {
+
+    public Survey(String question, String answer1, String answer2,int id) {
         this.question = question;
         this.answer1 = answer1;
         this.answer2 = answer2;
+        this.id=id;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getQuestion() {
