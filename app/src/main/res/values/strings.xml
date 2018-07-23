@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">newsurveyapp</string>
+    <string name="showdata">display</string>
+    <string name="title_activity_newdisplaypage">newdisplaypage</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

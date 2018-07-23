@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "973945088666",
+    "firebase_url": "https://newsurveyapp.firebaseio.com",
+    "project_id": "newsurveyapp",
+    "storage_bucket": "newsurveyapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:973945088666:android:3f887ed451c91bc6",
+        "android_client_info": {
+          "package_name": "com.example.batub.newsurveyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "973945088666-r43t45k20e17ilfva1f8cppsdseio5se.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.batub.newsurveyapp",
+            "certificate_hash": "b59721ba93cf55e70f7f16a6438f357d4680f76c"
+          }
+        },
+        {
+          "client_id": "973945088666-8g7tglk042mfkmqlccpau0ra8jv0vm5g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjY5Q2vThZsmrdY_npZvEn8jPMVc8FniE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "973945088666-8g7tglk042mfkmqlccpau0ra8jv0vm5g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
