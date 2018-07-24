@@ -38,6 +38,8 @@ public class displaypage extends AppCompatActivity {
     Integer question_no;
     String incNumber;
 
+
+
     FirebaseDatabase database;
     DatabaseReference dialogreference;
 
@@ -48,6 +50,9 @@ public class displaypage extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_displaypage);
+
+        Intent intent2= getIntent();
+        final String entry_number = intent2.getExtras().getString("latestEntry");
 
 
         button7= (Button) findViewById(R.id.displaytryout);
@@ -70,7 +75,23 @@ public class displaypage extends AppCompatActivity {
             public void onClick(View view) {
 
                 database=FirebaseDatabase.getInstance();
-                dialogreference=database.getReference().child("surveys");
+            //    dialogreference=database.getReference().child("surveys").child(entry_number);
+
+                dialogreference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String value=dataSnapshot.getValue(String.class);
+                        String TAG="my activity";
+                        Log.d(TAG,"value is" + value);
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
 
 

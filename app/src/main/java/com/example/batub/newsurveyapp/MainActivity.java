@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TextView textView;
 
+    String incrementString;
+
     private FirebaseDatabase myDatabase;
     private DatabaseReference myDatabaseRef, refLocation;
 
@@ -104,7 +106,8 @@ public class MainActivity extends AppCompatActivity {
 
                 query.addListenerForSingleValueEvent(valueEventListener);
 
-                String incrementString= Integer.toString(increment+1);
+
+                incrementString= Integer.toString(increment+1);
 
 
 
@@ -112,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
                 refLocation.child(incrementString).setValue(surveyObject);
 
-                refLocation.child(incrementString).child("id").setValue(incrementString);
+               // refLocation.child(incrementString).child("id").setValue(incrementString);
 
 
 
@@ -175,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
     public void goToDisplayPage(View view){
 
         Intent intent = new Intent(this,displaypage.class);
+        intent.putExtra("latestEntry",incrementString);
         startActivity(intent);
     }
 
