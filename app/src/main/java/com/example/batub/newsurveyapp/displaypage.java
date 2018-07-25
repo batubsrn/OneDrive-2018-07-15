@@ -44,13 +44,7 @@ public class displaypage extends AppCompatActivity {
     Integer question_no;
     String incNumber;
 
-
     //TextClock clock;
-
-
-
-
-
 
     Button button7;
 
@@ -59,12 +53,9 @@ public class displaypage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_displaypage);
 
-
         TextClock tClock = (TextClock) findViewById(R.id.textClock);
 
-
-
-        button7= (Button) findViewById(R.id.displaytryout);
+        button7= findViewById(R.id.displaytryout);
         /*
         button7.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -90,18 +81,18 @@ public class displaypage extends AppCompatActivity {
                 DatabaseReference dialogreference;
 
 
-                dialogreference=database.getReference().child("surveys").child(entry_number);
-
+                dialogreference=database.getReference().child("surveys").child("1");
 
 
                 dialogreference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        String value=dataSnapshot.getValue(String.class);
+                        newsurvey2.question= (String)dataSnapshot.child("question").getValue();
+                        newsurvey2.answer1= (String)dataSnapshot.child("answer1").getValue();
+                        newsurvey2.answer2= (String)dataSnapshot.child("answer2").getValue();
 
-                        String TAG="my activity";
-                        Log.d(TAG,"value is" + value);
+                        Log.d("question",newsurvey2.question);
 
 
                     }
@@ -113,10 +104,6 @@ public class displaypage extends AppCompatActivity {
                 });
 
 
-
-
-
-
                 AlertDialog.Builder mBuilder1=  new AlertDialog.Builder(displaypage.this);
                 View mView= getLayoutInflater().inflate(R.layout.survey_dialog,null);
 
@@ -124,13 +111,9 @@ public class displaypage extends AppCompatActivity {
                 Button answer1but= mView.findViewById(R.id.answer1button);
                 Button answer2but= mView.findViewById(R.id.answer2button);
 
-                // mTextView.setText(newsurvey2.getQuestion());
-                // answer1but.setText(newsurvey2.getAnswer1());
-                // answer2but.setText(newsurvey2.getAnswer2());
-
-
-
-
+                 mTextView.setText(newsurvey2.getQuestion());
+                 answer1but.setText(newsurvey2.getAnswer1());
+                 answer2but.setText(newsurvey2.getAnswer2());
 
 
                 answer1but.setOnClickListener(new View.OnClickListener() {
