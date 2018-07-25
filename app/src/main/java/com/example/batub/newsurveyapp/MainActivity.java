@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TextView textView;
 
+   // public Survey passTheSurveyObject;
+
     String incrementString;
 
     private FirebaseDatabase myDatabase;
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
         myDatabase= FirebaseDatabase.getInstance();
         myDatabaseRef = myDatabase.getReference();
+
+
         final DatabaseReference myref2 = myDatabase.getReference().child("surveys");
 
 
@@ -121,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
 
                 textView7.setText(incrementString);
 
+              //  passTheSurveyObject.changeAttributeSurvey(surveyObject);
+
 
 
 
@@ -178,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
     public void goToDisplayPage(View view){
 
         Intent intent = new Intent(this,displaypage.class);
-        intent.putExtra("latestEntry",incrementString);
+        intent.putExtra("latestObject",incrementString );
         startActivity(intent);
     }
 

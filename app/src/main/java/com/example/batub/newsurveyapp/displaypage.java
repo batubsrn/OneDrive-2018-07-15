@@ -18,9 +18,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.exoplayer2.upstream.DataSourceException;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,7 +32,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Calendar;
+
+
 
 public class displaypage extends AppCompatActivity {
 
@@ -39,9 +45,11 @@ public class displaypage extends AppCompatActivity {
     String incNumber;
 
 
+    //TextClock clock;
 
-    FirebaseDatabase database;
-    DatabaseReference dialogreference;
+
+
+
 
 
     Button button7;
@@ -51,8 +59,9 @@ public class displaypage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_displaypage);
 
-        Intent intent2= getIntent();
-        final String entry_number = intent2.getExtras().getString("latestEntry");
+
+        TextClock tClock = (TextClock) findViewById(R.id.textClock);
+
 
 
         button7= (Button) findViewById(R.id.displaytryout);
@@ -74,13 +83,23 @@ public class displaypage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                database=FirebaseDatabase.getInstance();
-            //    dialogreference=database.getReference().child("surveys").child(entry_number);
+                Intent intent2= getIntent();
+                String entry_number = intent2.getStringExtra("latestEntry");
+
+                FirebaseDatabase database=FirebaseDatabase.getInstance();
+                DatabaseReference dialogreference;
+
+
+                dialogreference=database.getReference().child("surveys").child(entry_number);
+
+
 
                 dialogreference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                         String value=dataSnapshot.getValue(String.class);
+
                         String TAG="my activity";
                         Log.d(TAG,"value is" + value);
 

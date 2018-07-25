@@ -9,6 +9,14 @@ class Survey {
 
     }
 
+    public  void changeAttributeSurvey(Survey s)
+    {
+        this.question=s.question;
+        this.answer1=s.answer1;
+        this.answer2=s.answer2;
+        this.id=s.id;
+    }
+
 
     public Survey(String question, String answer1, String answer2,int id) {
         this.question = question;

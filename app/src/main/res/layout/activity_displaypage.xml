@@ -21,6 +21,18 @@
 
 
 
+    <TextClock
+        android:id="@+id/textClock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:format24Hour="hh:mm:ss a"
+        android:layout_marginStart="100dp"
+        android:gravity="center"
+        />
+
+
+
+
     <Button
         android:id="@+id/gotovideobutton"
 
