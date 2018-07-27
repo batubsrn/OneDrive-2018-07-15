@@ -83,8 +83,10 @@ public class MainActivity extends AppCompatActivity {
 
                 //  refLocation=myDatabaseRef;
 
-                refLocation=myDatabase.getReference().child("surveys");
+                refLocation=myDatabase.getReference().child("deneme");
 
+
+                /*
                 Query query=refLocation.orderByKey(); // QUERY
 
                 ValueEventListener valueEventListener = new ValueEventListener() {
@@ -128,8 +130,11 @@ public class MainActivity extends AppCompatActivity {
               //  passTheSurveyObject.changeAttributeSurvey(surveyObject);
 
 
+                */
 
-
+                    refLocation.child("soru").setValue(value);
+                refLocation.child("cevap1").setValue(value2);
+                refLocation.child("cevap2").setValue(value3);
 
 
 

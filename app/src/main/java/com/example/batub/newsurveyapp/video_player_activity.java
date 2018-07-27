@@ -2,6 +2,8 @@ package com.example.batub.newsurveyapp;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +31,12 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.Util;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class video_player_activity extends Activity {
 
@@ -40,11 +48,24 @@ public class video_player_activity extends Activity {
     private BandwidthMeter bandwidthMeter;
 
 
+    FirebaseDatabase myDb;
+    DatabaseReference myRef2;
+    DatabaseReference myRef3;
+    DatabaseReference myRef4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
+
+        /*
+        String myQuestion;
+        String myanswer1;
+        String myAnswer2;
+        */
+
+
 
 
         final TextView buttonhint=(TextView) findViewById(R.id.buttonhint);
@@ -103,17 +124,81 @@ public class video_player_activity extends Activity {
             public void onClick(View view) {
 
 
+                 myDb=FirebaseDatabase.getInstance();
+                 myRef2=myDb.getReference().child("deneme").child("soru");
+                 myRef3=myDb.getReference().child("deneme").child("cevap1");
+                 myRef4=myDb.getReference().child("deneme").child("cevap2");
+
+
+
                 AlertDialog.Builder mBuilder1=  new AlertDialog.Builder(video_player_activity.this);
                 View mView= getLayoutInflater().inflate(R.layout.survey_dialog,null);
 
-                TextView mTextView= (TextView) mView.findViewById(R.id.surveyquestiontext);
-                Button answer1but= (Button) mView.findViewById(R.id.answer1button);
-                Button answer2but= (Button) mView.findViewById(R.id.answer2button);
+                final TextView mTextView= (TextView) mView.findViewById(R.id.surveyquestiontext);
+                final Button answer1but= (Button) mView.findViewById(R.id.answer1button);
+                final Button answer2but= (Button) mView.findViewById(R.id.answer2button);
+
+
+
+                myRef2.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        String myQuestion= dataSnapshot.getValue(String.class);
+                        mTextView.setText(myQuestion);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                myRef3.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        String myAnswer1= dataSnapshot.getValue(String.class);
+                        answer1but.setText(myAnswer1);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                myRef4.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        String myAnswer2= dataSnapshot.getValue(String.class);
+                        answer2but.setText(myAnswer2);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
+
+
+                mBuilder1.setView(mView);
+                final AlertDialog dialog =mBuilder1.create();
+                dialog.show();
 
                 answer1but.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(getApplicationContext(),"you have choosen answer1",Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
 
                     }
 
@@ -125,15 +210,11 @@ public class video_player_activity extends Activity {
                     public void onClick(View view) {
 
                         Toast.makeText(getApplicationContext(),"you have choosen answer2",Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+
 
                     }
                 });
-
-                mBuilder1.setView(mView);
-                AlertDialog dialog =mBuilder1.create();
-                dialog.show();
-
-
 
 
             }

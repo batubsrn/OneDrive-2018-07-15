@@ -111,9 +111,6 @@ public class displaypage extends AppCompatActivity {
                 Button answer1but= mView.findViewById(R.id.answer1button);
                 Button answer2but= mView.findViewById(R.id.answer2button);
 
-                 mTextView.setText(newsurvey2.getQuestion());
-                 answer1but.setText(newsurvey2.getAnswer1());
-                 answer2but.setText(newsurvey2.getAnswer2());
 
 
                 answer1but.setOnClickListener(new View.OnClickListener() {
@@ -156,8 +153,8 @@ public class displaypage extends AppCompatActivity {
 
     public void gotosurveylist(View view)
     {
-       // Intent intent5= new Intent(this,listactivity.class);
-        // startActivity(intent5);
+        Intent intent5= new Intent(this,database_page.class);
+         startActivity(intent5);
     }
 
     public void gonewdisplay(View view)

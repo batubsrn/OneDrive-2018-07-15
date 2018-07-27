@@ -23,7 +23,9 @@
             android:label="@string/title_activity_newdisplaypage"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".list_activity" />
-        <activity android:name=".listactivity"></activity>
+        <activity android:name=".listactivity" />
+        <activity android:name=".database_ex" />
+        <activity android:name=".database_page"></activity>
     </application>
 
 </manifest>
