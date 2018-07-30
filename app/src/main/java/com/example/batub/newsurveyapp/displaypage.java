@@ -53,6 +53,11 @@ public class displaypage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_displaypage);
 
+        final TextView op1textview,op2textview;
+
+        op1textview=(TextView) findViewById(R.id.op1text);
+        op2textview=(TextView) findViewById(R.id.op2text);
+
         TextClock tClock = (TextClock) findViewById(R.id.textClock);
 
         button7= findViewById(R.id.displaytryout);
@@ -83,6 +88,35 @@ public class displaypage extends AppCompatActivity {
 
                 dialogreference=database.getReference().child("surveys").child("1");
 
+                database.getReference().child("answercounts").child("op1").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Double op1count= (Double) dataSnapshot.getValue();
+
+
+                        op1textview.setText( Double.toString(op1count));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                database.getReference().child("answercounts").child("op2").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Double op2count= (Double) dataSnapshot.getValue();
+
+
+                        op2textview.setText( Double.toString(op2count));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
                 dialogreference.addValueEventListener(new ValueEventListener() {
                     @Override

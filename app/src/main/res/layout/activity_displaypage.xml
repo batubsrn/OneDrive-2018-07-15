@@ -12,25 +12,21 @@
 
         android:layout_width="142dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="264dp"
+        android:layout_marginStart="216dp"
+        android:layout_marginTop="164dp"
 
         android:text="display tryout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
     <TextClock
         android:id="@+id/textClock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:format24Hour="hh:mm:ss "
         android:layout_marginStart="100dp"
-        android:gravity="center"
-        />
-
-
+        android:format24Hour="hh:mm:ss "
+        android:gravity="center" />
 
 
     <Button
@@ -38,8 +34,8 @@
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginTop="96dp"
         android:onClick="gotovideomethod"
         android:text="video player"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,24 +49,26 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="192dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="96dp"
         android:onClick="gonewdisplay"
         android:text=" new display page"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.296"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-     <Button
+    <Button
         android:id="@+id/gotosurveylistbutton"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="192dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="164dp"
         android:onClick="gotosurveylist"
         android:text=" survey list button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.615"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -82,4 +80,29 @@
         android:layout_marginTop="44dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/op1text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="244dp"
+        app:layout_constraintEnd_toStartOf="@+id/op2text"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/op2text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="84dp"
+        android:layout_marginTop="236dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 </android.support.constraint.ConstraintLayout>

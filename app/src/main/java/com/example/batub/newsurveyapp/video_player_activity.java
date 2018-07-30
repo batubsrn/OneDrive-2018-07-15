@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -40,6 +41,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class video_player_activity extends Activity {
 
+
+    String op1count;
+    String op2count ;
+
     private SimpleExoPlayer player;
 
     private DataSource.Factory mediaDataSourceFactory;
@@ -58,6 +63,8 @@ public class video_player_activity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
+
+
 
         /*
         String myQuestion;
@@ -192,14 +199,50 @@ public class video_player_activity extends Activity {
 
                 mBuilder1.setView(mView);
                 final AlertDialog dialog =mBuilder1.create();
+
                 dialog.show();
+
+                final DatabaseReference myref5=myDb.getReference().child("answercounts").child("1");
+
+
+
 
                 answer1but.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getApplicationContext(),"you have choosen answer1",Toast.LENGTH_LONG).show();
-                        dialog.dismiss();
 
+
+
+                        myref5.orderByKey().limitToFirst(1).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                 op1count =dataSnapshot.getValue(String.class);
+
+                                 Log.d("message",dataSnapshot.toString());
+
+
+                                 Integer op1countInt;
+
+                               // op1countInt =Integer.parseInt(op1count);
+
+
+                               //op1countInt = op1countInt +1;
+
+                              // op1count=Integer.toString(op1countInt);
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        myref5.child("op1").setValue(op1count);
+
+                       // dialog.dismiss();
+                        Toast.makeText(getApplicationContext(),"you have choosen answer1",Toast.LENGTH_LONG).show();
                     }
 
                 });
@@ -209,12 +252,47 @@ public class video_player_activity extends Activity {
                     @Override
                     public void onClick(View view) {
 
+                        myref5.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                op2count =dataSnapshot.getValue(String.class);
+
+
+
+                                Integer op2countInt;
+
+                              // op2countInt =Integer.parseInt(op2count);
+
+
+
+                              // op2countInt = op2countInt +1;
+
+                              // op2count=Integer.toString(op2countInt);
+                                                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        myref5.child("op2").setValue(op2count);
+
+                       // dialog.dismiss();
                         Toast.makeText(getApplicationContext(),"you have choosen answer2",Toast.LENGTH_LONG).show();
-                        dialog.dismiss();
+
+
+
+
+
 
 
                     }
                 });
+
+
+               // TextView op1text,op2text;
 
 
             }
