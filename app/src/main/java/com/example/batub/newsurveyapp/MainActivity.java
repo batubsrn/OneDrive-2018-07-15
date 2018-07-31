@@ -191,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,displaypage.class);
         intent.putExtra("latestObject",incrementString );
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_right_anim);
     }
 
 }

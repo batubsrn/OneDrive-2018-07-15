@@ -12,6 +12,14 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    
+    
+    <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity" >
+
+        <item name="AndroidActivityOpen" >@anim/slide_right_anim     </item>
+
+        
+    </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

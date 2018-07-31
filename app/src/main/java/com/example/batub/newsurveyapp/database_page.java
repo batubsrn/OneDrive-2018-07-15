@@ -12,54 +12,46 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class database_page extends AppCompatActivity {
 
     FirebaseDatabase  myDatabase;
-    DatabaseReference myRef3;
-    Button dialogbutton;
+    DatabaseReference voteRef;
+    Button vote1button,vote2button;
+    TextView vote1text,vote2text, vote1percent,vote2percent;
+
+    Integer vote1Int,vote2Int;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.database_page_layout);
-        dialogbutton= (Button) findViewById(R.id.questiontext);
 
-        dialogbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        vote1text= (TextView) findViewById(R.id.vote1text);
+        vote2text= (TextView) findViewById(R.id.vote2text);
 
-                AlertDialog.Builder mBuilder1=  new AlertDialog.Builder(database_page.this);
-                View mView= getLayoutInflater().inflate(R.layout.survey_dialog,null);
-
-                TextView mTextView= mView.findViewById(R.id.surveyquestiontext);
-                Button answer1but= mView.findViewById(R.id.answer1button);
-                Button answer2but= mView.findViewById(R.id.answer2button);
-
-
-                mBuilder1.setView(mView);
-                AlertDialog dialog =mBuilder1.create();
-
-
-                dialog.show();
-
-
-
-            }
-        });
 
 
         myDatabase=FirebaseDatabase.getInstance();
-        myRef3=myDatabase.getReference().child("deneme").child("soru");
+        voteRef=myDatabase.getReference().child("votecount").child("1");
 
-        myRef3.addValueEventListener(new ValueEventListener() {
+        Query vote1query=voteRef.orderByKey().limitToFirst(1);
+        Query vote2query=voteRef.orderByKey().limitToLast(1);
+
+        /*
+
+        vote1query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                String myChildquestion= dataSnapshot.getValue(String.class);
-                dialogbutton.setText(myChildquestion);
+                String vote1number =dataSnapshot.getValue(String.class);
+                vote1text.setText(vote1number);
+                vote1Int=Integer.parseInt(vote1number);
 
             }
 
@@ -69,6 +61,22 @@ public class database_page extends AppCompatActivity {
             }
         });
 
+        vote2query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String vote2number =dataSnapshot.getValue(String.class);
+                vote2text.setText(vote2number);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        */
 
 
     }
