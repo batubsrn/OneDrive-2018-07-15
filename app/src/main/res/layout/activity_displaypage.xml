@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="216dp"
         android:layout_marginTop="164dp"
+        android:onClick="gotomain"
 
         android:text="display tryout"
         app:layout_constraintStart_toStartOf="parent"

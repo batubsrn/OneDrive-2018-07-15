@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         myDatabase= FirebaseDatabase.getInstance();
         myDatabaseRef = myDatabase.getReference();
 
@@ -186,12 +188,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     public void goToDisplayPage(View view){
 
         Intent intent = new Intent(this,displaypage.class);
         intent.putExtra("latestObject",incrementString );
         startActivity(intent);
-        overridePendingTransition(R.anim.slide_right_anim);
+        overridePendingTransition(R.anim.fadein,R.anim.fadein);
+
+
     }
 
 }

@@ -48,10 +48,16 @@ public class displaypage extends AppCompatActivity {
 
     Button button7;
 
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_displaypage);
+
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 
         final TextView op1textview,op2textview;
 
@@ -82,100 +88,20 @@ public class displaypage extends AppCompatActivity {
                 Intent intent2= getIntent();
                 String entry_number = intent2.getStringExtra("latestEntry");
 
-                FirebaseDatabase database=FirebaseDatabase.getInstance();
-                DatabaseReference dialogreference;
 
-
-                dialogreference=database.getReference().child("surveys").child("1");
-
-                database.getReference().child("answercounts").child("op1").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Double op1count= (Double) dataSnapshot.getValue();
-
-
-                        op1textview.setText( Double.toString(op1count));
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-                database.getReference().child("answercounts").child("op2").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Double op2count= (Double) dataSnapshot.getValue();
-
-
-                        op2textview.setText( Double.toString(op2count));
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-                dialogreference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        newsurvey2.question= (String)dataSnapshot.child("question").getValue();
-                        newsurvey2.answer1= (String)dataSnapshot.child("answer1").getValue();
-                        newsurvey2.answer2= (String)dataSnapshot.child("answer2").getValue();
-
-                        Log.d("question",newsurvey2.question);
-
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-
-                AlertDialog.Builder mBuilder1=  new AlertDialog.Builder(displaypage.this);
-                View mView= getLayoutInflater().inflate(R.layout.survey_dialog,null);
-
-                TextView mTextView= mView.findViewById(R.id.surveyquestiontext);
-                Button answer1but= mView.findViewById(R.id.answer1button);
-                Button answer2but= mView.findViewById(R.id.answer2button);
-
-
-
-                answer1but.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        Toast.makeText(getApplicationContext(),"you have choosen answer1",Toast.LENGTH_SHORT).show();
-
-                    }
-
-                });
-
-                answer2but.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        Toast.makeText(getApplicationContext(),"you have chosen answer2",Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
-                mBuilder1.setView(mView);
-                AlertDialog dialog =mBuilder1.create();
-
-
-                dialog.show();
 
             }
 
         });
 
+    }
+
+
+    @Override
+    public void finish(){
+
+        super.finish();
+       overridePendingTransition(R.anim.fadein,R.anim.fadein);
     }
 
     public void gotovideomethod(View view) {
@@ -195,6 +121,11 @@ public class displaypage extends AppCompatActivity {
     {
         Intent intent4 = new Intent(this, newdisplaypage.class);
         startActivity(intent4);
+        overridePendingTransition(R.anim.fadein,R.anim.fadein);
+    }
+
+    public void gotomain(View view){
+
     }
 
 
