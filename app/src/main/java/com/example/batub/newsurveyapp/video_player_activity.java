@@ -66,6 +66,8 @@ public class video_player_activity extends Activity {
 
 
 
+
+
         /*
         String myQuestion;
         String myanswer1;

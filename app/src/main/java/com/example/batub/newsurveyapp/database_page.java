@@ -1,5 +1,7 @@
 package com.example.batub.newsurveyapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,12 +9,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class database_page extends AppCompatActivity {
 
@@ -32,6 +37,7 @@ public class database_page extends AppCompatActivity {
      static Double d3;
      static Double d4;
 
+    Boolean isAnswered= false;
 
 
     @Override
@@ -40,6 +46,12 @@ public class database_page extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.database_page_layout);
+
+
+
+        SharedPreferences sp;
+
+        sp =getPreferences(MODE_PRIVATE);
 
         myDatabase=FirebaseDatabase.getInstance();
         voteRef=myDatabase.getReference().child("votecount").child("1");
@@ -106,25 +118,44 @@ public class database_page extends AppCompatActivity {
 
             }
         });
+        if (!isAnswered) {
+            vote1button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-        vote1button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                    vote1Int= vote1Int+1;
+                    increment.child("vote1").setValue(vote1Int);
 
-                vote1Int= vote1Int+1;
-                increment.child("vote1").setValue(vote1Int);
-            }
-        });
+                    Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
+
+                    isAnswered= true;
+
+                    vote1button.setClickable(false);
+                    vote2button.setClickable(false);
+
+                }
+            });
 
 
-        vote2button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            vote2button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                vote2Int= vote2Int+1;
-                increment.child("vote2").setValue(vote2Int);
-            }
-        });
+                    vote2Int= vote2Int+1;
+                    increment.child("vote2").setValue(vote2Int);
+
+                    Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
+
+                    isAnswered=true;
+
+                    vote1button.setClickable(false);
+                    vote2button.setClickable(false);
+
+                 // increment.child("voted__users").setValue();
+
+                }
+            });
+        }
 
 
     }
