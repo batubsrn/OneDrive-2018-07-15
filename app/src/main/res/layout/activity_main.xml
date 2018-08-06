@@ -85,5 +85,16 @@
         android:id="@+id/denemeview"
         />
 
+    <EditText
+        android:id="@+id/editMinuteText"
+        android:layout_width="182dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/readdataview"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="19dp"
+        android:ems="10"
+        android:hint="accessible for X min"
+        android:inputType="number" />
+
 
 </RelativeLayout>

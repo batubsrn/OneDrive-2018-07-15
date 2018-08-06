@@ -47,6 +47,8 @@ public class displaypage extends AppCompatActivity {
     //TextClock clock;
 
     Button button7;
+    Intent intent2;
+    Bundle extras2;
 
 
 
@@ -56,6 +58,11 @@ public class displaypage extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_displaypage);
+
+      /*   intent2 = getIntent();
+         extras2 = intent2.getExtras();
+*/
+
 
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 
@@ -111,9 +118,13 @@ public class displaypage extends AppCompatActivity {
 
     }
 
-    public void gotosurveylist(View view)
+    public void gotosurveylist(View view) //database page
     {
         Intent intent5= new Intent(this,database_page.class);
+
+        /*intent5.putExtras(extras2);*/
+
+
          startActivity(intent5);
     }
 

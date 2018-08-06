@@ -203,6 +203,7 @@ public class video_player_activity extends Activity {
                 final AlertDialog dialog =mBuilder1.create();
 
                 dialog.show();
+                dialog.getWindow().setLayout( 800,500 );
 
                 final DatabaseReference myref5=myDb.getReference().child("answercounts").child("1");
 

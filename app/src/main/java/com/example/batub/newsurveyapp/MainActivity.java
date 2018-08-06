@@ -26,22 +26,27 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.util.Calendar;
+
 import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 public class MainActivity extends AppCompatActivity {
 
     int increment;
     private Button button1, button2;
-    private EditText editText, editText2,editText3;
+    private EditText editText, editText2,editText3,editMinuteText;
     private RecyclerView recyclerView;
     private TextView textView;
 
    // public Survey passTheSurveyObject;
 
-    String incrementString;
+    //String incrementString;
 
     private FirebaseDatabase myDatabase;
     private DatabaseReference myDatabaseRef, refLocation;
+
+    Long enterTime ;
+    Long minuteRange;
 
 
 
@@ -58,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         myDatabase= FirebaseDatabase.getInstance();
         myDatabaseRef = myDatabase.getReference();
 
@@ -71,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
         editText2 =(EditText) findViewById(R.id.editText2);
         editText3 =(EditText) findViewById(R.id.editText3);
+        editMinuteText =(EditText) findViewById(R.id.editMinuteText);
+
         textView = (TextView) findViewById(R.id.readdataview);
        final TextView textView7 = (TextView) findViewById(R.id.denemeview);
 
@@ -82,6 +90,10 @@ public class MainActivity extends AppCompatActivity {
                 String value= editText.getText().toString(); //question
                 String value2= editText2.getText().toString(); //answer1
                 String value3= editText3.getText().toString(); //answer2
+
+                 minuteRange= Long.valueOf(editMinuteText.getText().toString()); //answer2
+
+                enterTime = Calendar.getInstance().getTimeInMillis();
 
                 //  refLocation=myDatabaseRef;
 
@@ -138,6 +150,10 @@ public class MainActivity extends AppCompatActivity {
                 refLocation.child("cevap1").setValue(value2);
                 refLocation.child("cevap2").setValue(value3);
 
+                refLocation.child("minute_range").setValue(minuteRange);
+                refLocation.child("enter_time").setValue(enterTime);
+
+
 
 
 
@@ -162,6 +178,8 @@ public class MainActivity extends AppCompatActivity {
                 editText.getText().clear();
                 editText2.getText().clear();
                 editText3.getText().clear();
+                editMinuteText.getText().clear();
+
 
                 Toast.makeText(getApplicationContext(),
                         "added to firebase", Toast.LENGTH_LONG).show();
@@ -192,7 +210,12 @@ public class MainActivity extends AppCompatActivity {
     public void goToDisplayPage(View view){
 
         Intent intent = new Intent(this,displaypage.class);
-        intent.putExtra("latestObject",incrementString );
+
+       /* Bundle extras =new Bundle() ;
+        extras.putLong("ENTER_TIME",enterTime );
+        extras.putLong("MINUTE_RANGE",minuteRange );
+        intent.putExtras(extras);*/
+
         startActivity(intent);
         overridePendingTransition(R.anim.fadein,R.anim.fadein);
 

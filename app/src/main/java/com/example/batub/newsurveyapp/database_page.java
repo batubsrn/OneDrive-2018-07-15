@@ -1,6 +1,7 @@
 package com.example.batub.newsurveyapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,11 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,9 +28,13 @@ import static android.content.Context.MODE_PRIVATE;
 public class database_page extends AppCompatActivity {
 
     FirebaseDatabase  myDatabase;
-    DatabaseReference voteRef,op1ref,increment;
+    DatabaseReference voteRef,op1ref,increment,minuteRef;
     Button vote1button,vote2button;
     TextView vote1text,vote2text, vote1displaytextview,vote2displaytextview,vote1bartext,vote2bartext;
+
+
+    Long enterTime , minuteRange;
+
 
     ProgressBar percent1Progress,percent2Progress;
     // String progbar1textStr,progbar2textStr;
@@ -34,10 +44,12 @@ public class database_page extends AppCompatActivity {
 
      static   int i3;
 
+
      static Double d3;
      static Double d4;
 
-    Boolean isAnswered= false;
+    boolean isAnswered;
+    boolean onRange ;
 
 
     @Override
@@ -47,11 +59,18 @@ public class database_page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.database_page_layout);
 
+        isAnswered=false;
 
+
+        /*Intent i2= getIntent();
+        Bundle extrasReceivingEnd= i2.getExtras();
+        enterTime = extrasReceivingEnd.getLong("ENTER_TIME");
+        minuteRange = extrasReceivingEnd.getLong("MINUTE_RANGE");
+*/
 
         SharedPreferences sp;
 
-        sp =getPreferences(MODE_PRIVATE);
+        sp =getSharedPreferences("on_range", Context.MODE_PRIVATE);;
 
         myDatabase=FirebaseDatabase.getInstance();
         voteRef=myDatabase.getReference().child("votecount").child("1");
@@ -59,6 +78,8 @@ public class database_page extends AppCompatActivity {
         op1ref=myDatabase.getReference().child("votecount").child("1"); // read vote count
 
         increment=myDatabase.getReference().child("votecount").child("1"); // increment vote count
+
+        minuteRef=myDatabase.getReference().child("deneme");
 
         vote1button = (Button) findViewById(R.id.vote1increment);
         vote2button = (Button) findViewById(R.id.vote2increment);
@@ -75,6 +96,36 @@ public class database_page extends AppCompatActivity {
 
         vote1displaytextview = (TextView) findViewById(R.id.vote1displaytext);
         vote2displaytextview= (TextView) findViewById(R.id.vote2displaytext);
+
+        minuteRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                enterTime=dataSnapshot.child("enter_time").getValue(Long.class);
+                minuteRange=dataSnapshot.child("minute_range").getValue(Long.class);
+
+                Long currentTime = new Long(Calendar.getInstance().getTimeInMillis());
+
+                Long rangeInMilisec = new Long (minuteRange * 60000 );
+
+                System.out.print(rangeInMilisec> ( currentTime - enterTime));
+
+                if(rangeInMilisec> ( currentTime - enterTime)) {
+
+                    onRange= true ;
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        final SharedPreferences.Editor editor = sp.edit();
 
 
         op1ref.addValueEventListener(new ValueEventListener() {
@@ -118,7 +169,12 @@ public class database_page extends AppCompatActivity {
 
             }
         });
-        if (!isAnswered) {
+
+
+        System.out.println(onRange);
+        System.out.println(isAnswered);
+
+        if (!isAnswered  ) {
             vote1button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -129,6 +185,9 @@ public class database_page extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
 
                     isAnswered= true;
+
+                    editor.putBoolean("on_range",isAnswered);
+                    editor.apply();
 
                     vote1button.setClickable(false);
                     vote2button.setClickable(false);
@@ -158,8 +217,32 @@ public class database_page extends AppCompatActivity {
         }
 
 
+
+
     }
 
+
+    /*public boolean onTimeRange(Long enterTime,Long allowedMinute){
+
+
+        Long minute =  new Long(allowedMinute * 60000 );
+
+        Long currentTime = Calendar.getInstance().getTimeInMillis();
+
+        Long range=  (currentTime -  enterTime ) ;
+
+
+        *//* SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        System.out.println(formatter.format(date));*//*
+
+        if(range<= minute)
+        {
+            return true;
+        }
+
+        return false;
+    }*/
 
  /*   public void savenumber(Long long1,int i,Double doub){
 

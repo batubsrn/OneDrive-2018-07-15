@@ -11,29 +11,30 @@
     android:orientation="vertical" >
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/surveyquestiontext"
+        android:layout_width="112dp"
+        android:layout_height="34dp"
+
         android:layout_gravity="center"
 
-        android:id="@+id/surveyquestiontext"
-
-         android:text="@string/dialog_popup_question_text"
-        />
+        android:text="@string/dialog_popup_question_text" />
 
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
         android:id="@+id/answer1button"
+        android:layout_width="wrap_content"
 
-        android:text="answer1 (e.g. : yes) "
-        />
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="50dp"
+
+        android:text="answer1 (e.g. : yes) " />
 
     <Button
+        android:id="@+id/answer2button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/answer2button"
         android:text="answer2 (e.g. no way )"
 
 
