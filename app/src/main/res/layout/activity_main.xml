@@ -96,5 +96,18 @@
         android:hint="accessible for X min"
         android:inputType="number" />
 
+    <Button
+        android:id="@+id/finale_construct"
+        android:layout_width="193dp"
+        android:layout_height="42dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/editText2"
+        android:layout_marginBottom="185dp"
+        android:text="finale_construct"
+        android:onClick="goToFinale"
+        />
+
+
+
 
 </RelativeLayout>

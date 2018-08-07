@@ -20,6 +20,8 @@
         android:text="@string/dialog_popup_question_text" />
 
 
+
+
     <Button
         android:id="@+id/answer1button"
         android:layout_width="wrap_content"
@@ -39,5 +41,7 @@
 
 
         />
+
+
 
     </LinearLayout>

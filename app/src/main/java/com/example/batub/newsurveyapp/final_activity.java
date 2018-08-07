@@ -40,7 +40,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class video_player_activity extends Activity {
+public class final_activity extends AppCompatActivity {
 
 
     String op1count;
@@ -59,24 +59,13 @@ public class video_player_activity extends Activity {
     DatabaseReference myRef2;
     DatabaseReference myRef3;
     DatabaseReference myRef4;
+    FloatingActionButton votingButton ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_player);
-
-
-
-
-
-        /*
-        String myQuestion;
-        String myanswer1;
-        String myAnswer2;
-        */
-
-
+        setContentView(R.layout.final_activity_layout);
 
 
         final TextView buttonhint=(TextView) findViewById(R.id.buttonhint);
@@ -91,82 +80,48 @@ public class video_player_activity extends Activity {
         fab2.setVisibility(View.GONE);
         buttonhint.setVisibility(View.VISIBLE);
         buttonhint2.setVisibility(View.GONE);
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        fab2.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-
-                Toast.makeText(getApplicationContext(),"Surveys are back",Toast.LENGTH_SHORT).show();
-                fab.setVisibility(View.VISIBLE);
-                fab2.setVisibility(View.GONE);
-                buttonhint.setVisibility(View.VISIBLE);
-                buttonhint2.setVisibility(View.GONE);
-
-                return true;
-
-            }
-        });
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        fab2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"Press and hold in order to open surveys",Toast.LENGTH_SHORT).show();
-
-            }
-        });
 
 
-        fab.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Toast.makeText(getApplicationContext(),"surveys hidden",Toast.LENGTH_SHORT).show();
-                fab.setVisibility(View.GONE);
-                fab2.setVisibility(View.VISIBLE);
-                buttonhint2.setVisibility(View.VISIBLE);
-                buttonhint.setVisibility(View.GONE);
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                return true;
-            }
-        });
         fab.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
 
-                 myDb=FirebaseDatabase.getInstance();
-                 myRef2=myDb.getReference().child("deneme").child("soru");
-                 myRef3=myDb.getReference().child("deneme").child("cevap1");
-                 myRef4=myDb.getReference().child("deneme").child("cevap2");
+                myDb=FirebaseDatabase.getInstance();
+                myRef2=myDb.getReference().child("deneme").child("soru");
+                myRef3=myDb.getReference().child("deneme").child("cevap1");
+                myRef4=myDb.getReference().child("deneme").child("cevap2");
 
 
 
-                AlertDialog.Builder mBuilder1=  new AlertDialog.Builder(video_player_activity.this);
+                AlertDialog.Builder mBuilder1=  new AlertDialog.Builder(final_activity.this);
                 View mView= getLayoutInflater().inflate(R.layout.survey_dialog,null);
 
                 final TextView mTextView= (TextView) mView.findViewById(R.id.surveyquestiontext);
                 final Button answer1but= (Button) mView.findViewById(R.id.answer1button);
                 final Button answer2but= (Button) mView.findViewById(R.id.answer2button);
 
-                /*countdownText = (TextView) findViewById(R.id.countdownText);
-                new CountDownTimer(30000,1000){
+               /* countdownText = (TextView) findViewById(R.id.countdownText);
 
+                new CountDownTimer(30 * 1000,1000){
 
                     @Override
                     public void onTick(long l) {
-                        countdownText.setText(String.valueOf(l/1000) );
+                        countdownText.setText((int) (l /1000));
                     }
 
                     @Override
                     public void onFinish() {
+                        countdownText.setText("done");
 
                     }
                 };
 */
-
-
-
                 myRef2.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -240,19 +195,19 @@ public class video_player_activity extends Activity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                 op1count =dataSnapshot.getValue(String.class);
+                                op1count =dataSnapshot.getValue(String.class);
 
-                                 Log.d("message",dataSnapshot.toString());
-
-
-                                 Integer op1countInt;
-
-                               // op1countInt =Integer.parseInt(op1count);
+                                Log.d("message",dataSnapshot.toString());
 
 
-                               //op1countInt = op1countInt +1;
+                                Integer op1countInt;
 
-                              // op1count=Integer.toString(op1countInt);
+                                // op1countInt =Integer.parseInt(op1count);
+
+
+                                //op1countInt = op1countInt +1;
+
+                                // op1count=Integer.toString(op1countInt);
 
                             }
 
@@ -264,7 +219,7 @@ public class video_player_activity extends Activity {
 
                         myref5.child("op1").setValue(op1count);
 
-                       // dialog.dismiss();
+                        // dialog.dismiss();
                         Toast.makeText(getApplicationContext(),"you have choosen answer1",Toast.LENGTH_LONG).show();
                     }
 
@@ -285,14 +240,14 @@ public class video_player_activity extends Activity {
 
                                 Integer op2countInt;
 
-                              // op2countInt =Integer.parseInt(op2count);
+                                // op2countInt =Integer.parseInt(op2count);
 
 
 
-                              // op2countInt = op2countInt +1;
+                                // op2countInt = op2countInt +1;
 
-                              // op2count=Integer.toString(op2countInt);
-                                                            }
+                                // op2count=Integer.toString(op2countInt);
+                            }
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -302,7 +257,7 @@ public class video_player_activity extends Activity {
 
                         myref5.child("op2").setValue(op2count);
 
-                       // dialog.dismiss();
+                        // dialog.dismiss();
                         Toast.makeText(getApplicationContext(),"you have choosen answer2",Toast.LENGTH_LONG).show();
 
 
@@ -315,7 +270,7 @@ public class video_player_activity extends Activity {
                 });
 
 
-               // TextView op1text,op2text;
+                // TextView op1text,op2text;
 
 
             }

@@ -51,6 +51,9 @@ public class database_page extends AppCompatActivity {
     boolean isAnswered;
     boolean onRange ;
 
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,10 @@ public class database_page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.database_page_layout);
 
-        isAnswered=false;
+        sp =getSharedPreferences("answered", Context.MODE_PRIVATE);;
+
+
+        isAnswered = sp.getBoolean("answered_or_not",false);
 
 
         /*Intent i2= getIntent();
@@ -68,9 +74,8 @@ public class database_page extends AppCompatActivity {
         minuteRange = extrasReceivingEnd.getLong("MINUTE_RANGE");
 */
 
-        SharedPreferences sp;
 
-        sp =getSharedPreferences("on_range", Context.MODE_PRIVATE);;
+
 
         myDatabase=FirebaseDatabase.getInstance();
         voteRef=myDatabase.getReference().child("votecount").child("1");
@@ -104,18 +109,29 @@ public class database_page extends AppCompatActivity {
                 enterTime=dataSnapshot.child("enter_time").getValue(Long.class);
                 minuteRange=dataSnapshot.child("minute_range").getValue(Long.class);
 
-                Long currentTime = new Long(Calendar.getInstance().getTimeInMillis());
+                System.out.print(enterTime);
+                System.out.print(minuteRange);
 
-                Long rangeInMilisec = new Long (minuteRange * 60000 );
+                Long currentTime = Calendar.getInstance().getTimeInMillis();
 
-                System.out.print(rangeInMilisec> ( currentTime - enterTime));
+                System.out.print(currentTime);
 
-                if(rangeInMilisec> ( currentTime - enterTime)) {
+                long timeDiff = currentTime - enterTime ;
+
+                long rangeInMillisec = minuteRange * 60000;
+
+                System.out.print( timeDiff );
+
+                if( rangeInMillisec> timeDiff ) {
 
                     onRange= true ;
+                    System.out.print(onRange);
 
                 }
-
+                else if (rangeInMillisec < timeDiff ){
+                    onRange = false;
+                    System.out.print(onRange);
+                }
 
             }
 
@@ -125,7 +141,7 @@ public class database_page extends AppCompatActivity {
             }
         });
 
-        final SharedPreferences.Editor editor = sp.edit();
+
 
 
         op1ref.addValueEventListener(new ValueEventListener() {
@@ -174,7 +190,16 @@ public class database_page extends AppCompatActivity {
         System.out.println(onRange);
         System.out.println(isAnswered);
 
-        if (!isAnswered  ) {
+
+        }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        editor = sp.edit();
+
+        if (onRange && !isAnswered ) {
             vote1button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -184,13 +209,13 @@ public class database_page extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
 
-                    isAnswered= true;
+                   // isAnswered= true;
 
-                    editor.putBoolean("on_range",isAnswered);
+                    editor.putBoolean("answered_or_not",true );
                     editor.apply();
 
-                    vote1button.setClickable(false);
-                    vote2button.setClickable(false);
+                    vote1button.setEnabled(false);
+                    vote2button.setEnabled(false);
 
                 }
             });
@@ -205,21 +230,26 @@ public class database_page extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
 
-                    isAnswered=true;
+                    //isAnswered=true;
 
-                    vote1button.setClickable(false);
-                    vote2button.setClickable(false);
+                    editor.putBoolean("answered_or_not",true);
+                    editor.apply();
 
-                 // increment.child("voted__users").setValue();
+                    vote1button.setEnabled(false);
+                    vote2button.setEnabled(false);
+
+                    // increment.child("voted__users").setValue();
 
                 }
             });
+
+
+
         }
 
 
-
-
     }
+
 
 
     /*public boolean onTimeRange(Long enterTime,Long allowedMinute){

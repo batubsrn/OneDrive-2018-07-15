@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase myDatabase;
     private DatabaseReference myDatabaseRef, refLocation;
 
+    Button finale_button;
+
     Long enterTime ;
     Long minuteRange;
 
@@ -70,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
 
         final DatabaseReference myref2 = myDatabase.getReference().child("surveys");
 
+        finale_button= (Button) findViewById(R.id.finale_construct);
+
 
         button1= (Button) findViewById(R.id.button1); //add button
         button2= (Button) findViewById(R.id.button2); //to display page button
@@ -94,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                  minuteRange= Long.valueOf(editMinuteText.getText().toString()); //answer2
 
                 enterTime = Calendar.getInstance().getTimeInMillis();
+
 
                 //  refLocation=myDatabaseRef;
 
@@ -219,6 +224,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         overridePendingTransition(R.anim.fadein,R.anim.fadein);
 
+
+    }
+
+
+    public void goToFinale(View view){
+
+        Intent finalIntent = new Intent(this,final_activity.class);
+
+        startActivity(finalIntent);
 
     }
 

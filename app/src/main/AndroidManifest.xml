@@ -8,10 +8,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        android:theme="@style/AppTheme"
 
-            >
+        >
+
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,15 +20,26 @@
             </intent-filter>
         </activity>
         <activity android:name=".displaypage" />
-        <activity android:name=".video_player_activity" android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".video_player_activity"
+            android:screenOrientation="landscape" />
+
         <activity
             android:name=".newdisplaypage"
             android:label="@string/title_activity_newdisplaypage"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".list_activity" />
         <activity android:name=".listactivity" />
         <activity android:name=".database_ex" />
-        <activity android:name=".database_page"></activity>
+
+        <activity android:name=".database_page" />
+
+        <activity android:name=".final_activity"
+            android:screenOrientation="landscape"
+            />
+
     </application>
 
 </manifest>
