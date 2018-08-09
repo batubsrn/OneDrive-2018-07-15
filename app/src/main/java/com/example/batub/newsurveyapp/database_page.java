@@ -144,6 +144,50 @@ public class database_page extends AppCompatActivity {
 
 
 
+
+        vote1button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                vote1Int= vote1Int+1;
+                increment.child("vote1").setValue(vote1Int);
+
+                Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
+
+                // isAnswered= true;
+
+               // editor.putBoolean("answered_or_not",true );
+               // editor.apply();
+
+                vote1button.setEnabled(false);
+                vote2button.setEnabled(false);
+
+            }
+        });
+
+
+        vote2button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                vote2Int= vote2Int+1;
+                increment.child("vote2").setValue(vote2Int);
+
+                Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
+
+                //isAnswered=true;
+
+               // editor.putBoolean("answered_or_not",true);
+               // editor.apply();
+
+                vote1button.setEnabled(false);
+                vote2button.setEnabled(false);
+
+                // increment.child("voted__users").setValue();
+
+            }
+        });
+
         op1ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -158,7 +202,7 @@ public class database_page extends AppCompatActivity {
                 vote2text.setText( vote2CountStr );
 
                 d3=vote1Int.doubleValue(); //  vote 1 real count
-                 d4=vote2Int.doubleValue();         // vote 2 real count
+                d4=vote2Int.doubleValue();         // vote 2 real count
 
                 Double d5 = ( (d3)/(d3+d4)) * 100 ;  // vote 1 percentage
                 Double d6 = ( (d4)/(d3+d4)) * 100 ;  // vote 2 percentage
@@ -191,64 +235,11 @@ public class database_page extends AppCompatActivity {
         System.out.println(isAnswered);
 
 
-        }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        editor = sp.edit();
-
-        if (onRange && !isAnswered ) {
-            vote1button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    vote1Int= vote1Int+1;
-                    increment.child("vote1").setValue(vote1Int);
-
-                    Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
-
-                   // isAnswered= true;
-
-                    editor.putBoolean("answered_or_not",true );
-                    editor.apply();
-
-                    vote1button.setEnabled(false);
-                    vote2button.setEnabled(false);
-
-                }
-            });
-
-
-            vote2button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    vote2Int= vote2Int+1;
-                    increment.child("vote2").setValue(vote2Int);
-
-                    Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
-
-                    //isAnswered=true;
-
-                    editor.putBoolean("answered_or_not",true);
-                    editor.apply();
-
-                    vote1button.setEnabled(false);
-                    vote2button.setEnabled(false);
-
-                    // increment.child("voted__users").setValue();
-
-                }
-            });
-
-
-
-        }
-
 
     }
+
+
+
 
 
 
