@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +42,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
-public class final_activity extends Activity {
+
+public class final_demo extends Activity {
 
 
     private SimpleExoPlayer player;
@@ -52,75 +52,81 @@ public class final_activity extends Activity {
     private boolean shouldAutoPlay;
     private BandwidthMeter bandwidthMeter;
 
-     TextView votequestionView;
-     Button answer1Button ;
-     Button answer2Button ;
+    //////////////////////////////////////////
+
+    FloatingActionButton voteButton;
+
+    TextView boolTestView;
+
+    TextView questionView,vote1View,vote2View;
+
+    FirebaseDatabase voteDatabase;
+    DatabaseReference questionReference , voteCountReference ;
+
+    String question, option1,option2 ;
+
+    Boolean onTime;
 
 
-    FloatingActionButton openQuestionFab;
+    public void calculateMinute(Long phoneTime) {
 
-    TextView progress1Bar,progress2Bar ;
-    ProgressBar answer1Bar,answer2Bar;
 
-    FirebaseDatabase myDatabase;
 
-    DatabaseReference getQuestionsRef, getVoteCountRef, getMinuteRef;
+    }
 
-    boolean allowedMinute;
 
-    Long enterTime ,minuteRange ;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.final_activity_layout);
+        setContentView(R.layout.final_demo_layout);
 
-        myDatabase=FirebaseDatabase.getInstance();
+        boolTestView= (TextView) findViewById(R.id.booltesttext) ;
+        voteButton = (FloatingActionButton) findViewById(R.id.fab5);
 
-        getMinuteRef = myDatabase.getReference().child("deneme");
-        getQuestionsRef= myDatabase.getReference().child("deneme");
-        getVoteCountRef = myDatabase.getReference().child("votecount").child("1");
+        /////////////////// EXOPLAYER
+        shouldAutoPlay = true;
+        bandwidthMeter = new DefaultBandwidthMeter();
+        mediaDataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "mediaPlayerSample"), (TransferListener<? super DataSource>) bandwidthMeter);
+        Timeline.Window window = new Timeline.Window();
+        ImageView ivHideControllerButton = (ImageView) findViewById(R.id.exo_controller);
 
-        getMinuteRef.addValueEventListener(new ValueEventListener() {
+        ////////////////// DATABASE REFERENCES
+
+        voteDatabase=FirebaseDatabase.getInstance();
+        questionReference = voteDatabase.getReference().child("deneme");
+        voteCountReference = voteDatabase.getReference().child("votecount");
+
+        /////////// ON TIME CALCULATION
+        questionReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                enterTime=dataSnapshot.child("enter_time").getValue(Long.class);
-                minuteRange=dataSnapshot.child("minute_range").getValue(Long.class);
+                Long enterTime = dataSnapshot.child("enter_time").getValue(Long.class);
+                Long votingRangeMin = dataSnapshot.child("minute_range").getValue(Long.class);
 
-                System.out.print(enterTime);
-                System.out.print(minuteRange);
+                long votingRangeMills = ( votingRangeMin * 60000 );
 
-                Long currentTime = Calendar.getInstance().getTimeInMillis();
+                long phoneTime = Calendar.getInstance().getTimeInMillis();
 
-                System.out.print(currentTime);
+                long timeDiff =  (phoneTime - enterTime);
 
-                long timeDiff = currentTime - enterTime ;
+                        if (votingRangeMills > timeDiff) {
+                            onTime = true;
+                            Log.e("ontime","true");
 
-                long rangeInMillisec = minuteRange * 60000;
+                            boolTestView.setVisibility(View.VISIBLE);
+                            voteButton.setVisibility(View.VISIBLE);
 
-                System.out.print(enterTime);
-
-                System.out.print(minuteRange);
-
-                System.out.print(rangeInMillisec);
-
-                System.out.print(timeDiff);
-
-                System.out.print(currentTime);
-
-                if(rangeInMillisec > timeDiff ) {
-                    allowedMinute = true;
-
-                }else if (rangeInMillisec < timeDiff){
-                    allowedMinute=false;
-                }
-
-
-                System.out.print(allowedMinute);
-
+                        } else if ( votingRangeMills < timeDiff ){
+                            Log.e("ontime","false");
+                            onTime=false;
+                            boolTestView.setVisibility(View.GONE);
+                            voteButton.setVisibility(View.GONE);
+                        }
 
             }
 
@@ -128,44 +134,25 @@ public class final_activity extends Activity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        }) ;
 
-        /*openQuestionFab = findViewById(R.id.openQuestionFab);
+        ///////////////////////// VOTING ALERT DIALOG
 
-        votequestionView = (TextView) findViewById(R.id.votequestion);
-         answer1Button = (Button) findViewById(R.id.vote1button);
-         answer2Button = (Button) findViewById(R.id.vote2button);
-
-
-        openQuestionFab.setOnClickListener(new View.OnClickListener() {
-
+        voteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
-                AlertDialog.Builder mBuilder1=  new AlertDialog.Builder(final_activity.this);
-                View mView= getLayoutInflater().inflate(R.layout.vote_dialog,null);
-
-
-                getQuestionsRef.addValueEventListener(new ValueEventListener() {
+                questionReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                       String questionText =dataSnapshot.child("soru").getValue(String.class);
-                       String answer1Text= dataSnapshot.child("cevap1").getValue(String.class);
-                       String answer2Text= dataSnapshot.child("cevap2").getValue(String.class);
+                        question = dataSnapshot.child("soru").getValue(String.class);
+                        option1 = dataSnapshot.child("cevap1").getValue(String.class);
+                        option2 = dataSnapshot.child("cevap2").getValue(String.class);
 
-                       Log.e("soru",questionText);
-                       Log.e("cevap1",answer1Text);
-                       Log.e("cevap2",answer2Text);
-
-
-
-
-                     //  votequestionView.setText(questionText);
-                        answer1Button.setText( answer1Text);
-                        answer2Button.setText(answer2Text);
-
+                        Log.e("question",question);
+                        Log.e("option1",option1);
+                        Log.e("option1",option2);
                     }
 
                     @Override
@@ -174,35 +161,40 @@ public class final_activity extends Activity {
                     }
                 });
 
+                AlertDialog.Builder myBuilder = new AlertDialog.Builder(final_demo.this);
+                View myView = getLayoutInflater().inflate(R.layout.vote_dialog,null);
+
+                questionView = (TextView) findViewById(R.id.questionText);
+                vote1View = (TextView) findViewById(R.id.op1votebutton);
+                vote2View = (TextView) findViewById(R.id.op2votebutton);
 
 
-                mBuilder1.setView(mView);
-                final AlertDialog dialog =mBuilder1.create();
+                myBuilder.setView(myView);
+                final AlertDialog dialog =myBuilder.create();
+
+
+                questionView.setText(question);
+                vote1View.setText(option1);
+                vote2View.setText(option2);
+
 
                 dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
-
                 dialog.show();
-                dialog.getWindow().setLayout( 2000,500 );
+
+                dialog.getWindow().setLayout( 2000,1000 );
 
 
 
             }
+        });
 
 
 
-        });*/
+        ///////////////////////////////////////////
 
 
-
-        shouldAutoPlay = true;
-        bandwidthMeter = new DefaultBandwidthMeter();
-        mediaDataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "mediaPlayerSample"), (TransferListener<? super DataSource>) bandwidthMeter);
-        Timeline.Window window = new Timeline.Window();
-        ImageView ivHideControllerButton = (ImageView) findViewById(R.id.exo_controller);
 
     }
-
-
 
     private void initializePlayer() {
 
@@ -231,7 +223,6 @@ public class final_activity extends Activity {
 
 
     }
-
 
     private void releasePlayer() {
         if (player != null) {

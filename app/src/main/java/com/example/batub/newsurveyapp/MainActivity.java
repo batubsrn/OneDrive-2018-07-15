@@ -227,6 +227,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void gotodemo(View view){
+        Intent demoIntent = new Intent(this,final_demo.class);
+
+        startActivity(demoIntent);
+    }
 
     public void goToFinale(View view){
 

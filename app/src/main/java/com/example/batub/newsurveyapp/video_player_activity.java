@@ -91,44 +91,10 @@ public class video_player_activity extends Activity {
         fab2.setVisibility(View.GONE);
         buttonhint.setVisibility(View.VISIBLE);
         buttonhint2.setVisibility(View.GONE);
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        fab2.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
 
-                Toast.makeText(getApplicationContext(),"Surveys are back",Toast.LENGTH_SHORT).show();
-                fab.setVisibility(View.VISIBLE);
-                fab2.setVisibility(View.GONE);
-                buttonhint.setVisibility(View.VISIBLE);
-                buttonhint2.setVisibility(View.GONE);
-
-                return true;
-
-            }
-        });
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        fab2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"Press and hold in order to open surveys",Toast.LENGTH_SHORT).show();
 
-            }
-        });
-
-
-        fab.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Toast.makeText(getApplicationContext(),"surveys hidden",Toast.LENGTH_SHORT).show();
-                fab.setVisibility(View.GONE);
-                fab2.setVisibility(View.VISIBLE);
-                buttonhint2.setVisibility(View.VISIBLE);
-                buttonhint.setVisibility(View.GONE);
-
-                return true;
-            }
-        });
         fab.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -145,25 +111,11 @@ public class video_player_activity extends Activity {
                 AlertDialog.Builder mBuilder1=  new AlertDialog.Builder(video_player_activity.this);
                 View mView= getLayoutInflater().inflate(R.layout.survey_dialog,null);
 
-                final TextView mTextView= (TextView) mView.findViewById(R.id.surveyquestiontext);
-                final Button answer1but= (Button) mView.findViewById(R.id.answer1button);
-                final Button answer2but= (Button) mView.findViewById(R.id.answer2button);
-
-                /*countdownText = (TextView) findViewById(R.id.countdownText);
-                new CountDownTimer(30000,1000){
+                final TextView mTextView= (TextView) mView.findViewById(R.id.surveyquestiontext2);
+                final Button answer1but= (Button) mView.findViewById(R.id.answer1button2);
+                final Button answer2but= (Button) mView.findViewById(R.id.answer2button2);
 
 
-                    @Override
-                    public void onTick(long l) {
-                        countdownText.setText(String.valueOf(l/1000) );
-                    }
-
-                    @Override
-                    public void onFinish() {
-
-                    }
-                };
-*/
 
 
 

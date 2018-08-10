@@ -93,9 +93,9 @@ public class newdisplaypage extends AppCompatActivity {
                 AlertDialog.Builder mBuilder1=  new AlertDialog.Builder(newdisplaypage.this);
                 View mView= getLayoutInflater().inflate(R.layout.survey_dialog,null);
 
-                TextView mTextView= (TextView) mView.findViewById(R.id.surveyquestiontext);
-                Button answer1but= (Button) mView.findViewById(R.id.answer1button);
-                Button answer2but= (Button) mView.findViewById(R.id.answer2button);
+                TextView mTextView= (TextView) mView.findViewById(R.id.surveyquestiontext2);
+                Button answer1but= (Button) mView.findViewById(R.id.answer1button2);
+                Button answer2but= (Button) mView.findViewById(R.id.answer2button2);
 
                 answer1but.setOnClickListener(new View.OnClickListener() {
                     @Override

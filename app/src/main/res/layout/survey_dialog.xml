@@ -11,7 +11,7 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/surveyquestiontext"
+        android:id="@+id/surveyquestiontext2"
         android:layout_width="112dp"
         android:layout_height="34dp"
 
@@ -21,7 +21,7 @@
 
 
     <Button
-        android:id="@+id/answer1button"
+        android:id="@+id/answer1button2"
         android:layout_width="wrap_content"
 
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         android:text="answer1 (e.g. : yes) " />
 
     <Button
-        android:id="@+id/answer2button"
+        android:id="@+id/answer2button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="answer2 (e.g. no way )"

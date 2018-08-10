@@ -107,7 +107,15 @@
         android:onClick="goToFinale"
         />
 
-
+    <Button
+        android:id="@+id/final_demo_button"
+        android:layout_width="68dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/editText2"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="-88dp"
+        android:onClick="gotodemo"
+        android:text="demo" />
 
 
 </RelativeLayout>
