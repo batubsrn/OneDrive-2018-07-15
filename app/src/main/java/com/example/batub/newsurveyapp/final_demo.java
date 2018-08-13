@@ -2,18 +2,15 @@ package com.example.batub.newsurveyapp;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,17 +30,20 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.Util;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
+
+import static com.example.batub.newsurveyapp.database_page.d3;
 
 
 public class final_demo extends Activity {
+
 
 
     private SimpleExoPlayer player;
@@ -58,21 +58,95 @@ public class final_demo extends Activity {
 
     TextView boolTestView;
 
-    TextView questionView,vote1View,vote2View;
+    TextView questionView;
+    Button vote1Button, vote2Button;
 
     FirebaseDatabase voteDatabase;
-    DatabaseReference questionReference , voteCountReference ;
+    DatabaseReference questionReference , voteCountReference, progressBarReference ;
 
-    String question, option1,option2 ;
+    //    String question, option1,option2 ;
+
+    Long vote1Count,vote2Count ;
 
     Boolean onTime;
+    boolean answered;
+
+    static Double d3;
+    static Double d4;
+
+    ProgressBar percent1Progress,percent2Progress;
+
+    TextView vote1BarPercent, vote2BarPercent ;
 
 
-    public void calculateMinute(Long phoneTime) {
+
+    public void openResultDialog() {
+
+        AlertDialog.Builder myBuilder2 = new AlertDialog.Builder(final_demo.this);
+        View myView2 = getLayoutInflater().inflate(R.layout.vote_result_layout,null);
+
+        percent1Progress = (ProgressBar) myView2.findViewById(R.id.vote1progressbar);
+        percent2Progress = (ProgressBar) myView2.findViewById(R.id.vote2progressbar);
+        vote1BarPercent = (TextView) myView2.findViewById(R.id.vote1BarPercentText);
+        vote2BarPercent = (TextView) myView2.findViewById(R.id.vote2BarPercentText);
+
+        progressBarReference = voteDatabase.getReference().child("votecount").child("1");
+
+        progressBarReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                vote1Count = dataSnapshot.child("vote1").getValue(Long.class);
+                vote2Count = dataSnapshot.child("vote2").getValue(Long.class);
+
+                String vote1CountStr = String.valueOf(vote1Count);
+                String vote2CountStr=String.valueOf(vote2Count);
+
+               // vote1percent.setText(vote1CountStr);
+               // vote2percent.setText( vote2CountStr );
+
+                d3=vote1Count.doubleValue();        //  vote 1 real count convert to double for decimal
+                d4=vote2Count.doubleValue();         // vote 2 real count    "      "   "   "       "
+
+                Double d5 = ( (d3)/(d3+d4)) * 100 ;  // vote 1 percentage with decimal
+                Double d6 = ( (d4)/(d3+d4)) * 100 ;  // vote 2 percentage   "     "
+
+                int int5 = d5.intValue(); // test & backup
+                int int6 = d6.intValue(); // test & backup
+
+                System.out.println(d3);
+                System.out.println(d4);
+                System.out.println(d5);
+                System.out.println(d6);
+
+                percent1Progress.setProgress(int5);
+                percent2Progress.setProgress(int6);
+
+                vote1BarPercent.setText("%" + Double.toString(d5)  );    // percentage display
+                vote2BarPercent.setText("%" + Double.toString(d6)  );    //     "         "
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        myBuilder2.setView(myView2);
+        final AlertDialog dialog =myBuilder2.create();
+
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
+        dialog.show();
+
+        dialog.getWindow().setLayout( 800,480);
 
 
 
     }
+
 
 
 
@@ -86,6 +160,7 @@ public class final_demo extends Activity {
 
         boolTestView= (TextView) findViewById(R.id.booltesttext) ;
         voteButton = (FloatingActionButton) findViewById(R.id.fab5);
+
 
         /////////////////// EXOPLAYER
         shouldAutoPlay = true;
@@ -138,55 +213,113 @@ public class final_demo extends Activity {
 
         ///////////////////////// VOTING ALERT DIALOG
 
-        voteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                questionReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        question = dataSnapshot.child("soru").getValue(String.class);
-                        option1 = dataSnapshot.child("cevap1").getValue(String.class);
-                        option2 = dataSnapshot.child("cevap2").getValue(String.class);
+            voteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                        Log.e("question",question);
-                        Log.e("option1",option1);
-                        Log.e("option1",option2);
+                    if(answered){
+                        openResultDialog();
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    /// Get questions and display them
 
+                    if (answered==false){
+                        AlertDialog.Builder myBuilder = new AlertDialog.Builder(final_demo.this);
+                        View myView = getLayoutInflater().inflate(R.layout.vote_dialog,null);
+
+                        questionView = (TextView) myView.findViewById(R.id.questionText);
+                        vote1Button = (Button) myView.findViewById(R.id.op1votebutton);
+                        vote2Button = (Button) myView.findViewById(R.id.op2votebutton);
+
+                        questionReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                               String  question = dataSnapshot.child("soru").getValue(String.class);
+                               String option1 = dataSnapshot.child("cevap1").getValue(String.class);
+                               String  option2 = dataSnapshot.child("cevap2").getValue(String.class);
+
+                               Log.e("question",question);
+                                Log.e("option1",option1);
+                                Log.e("option2",option2);
+
+                               questionView.setText(question);
+                                vote1Button.setText(option1);
+                                vote2Button.setText(option2);
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        myBuilder.setView(myView);
+                        final AlertDialog dialog =myBuilder.create();
+
+                        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
+                        dialog.show();
+
+                        dialog.getWindow().setLayout( 800,480);
+
+                        voteCountReference= voteDatabase.getReference().child("votecount").child("1");
+
+                        voteCountReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                vote1Count = dataSnapshot.child("vote1").getValue(Long.class);
+                                vote2Count = dataSnapshot.child("vote2").getValue(Long.class);
+                                Log.e("vote1", String.valueOf(vote1Count) );
+                                Log.e("vote2", String.valueOf(vote2Count) );
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+
+                            }
+                        });
+
+                        vote1Button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+
+                                vote1Count= vote1Count+1;
+                                voteCountReference.child("vote1").setValue(vote1Count);
+
+                                answered = true;
+                                Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
+
+                                dialog.dismiss();
+                                openResultDialog();
+                            }
+                        });
+
+                        vote2Button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                vote2Count= vote2Count+1;
+                                voteCountReference.child("vote2").setValue(vote2Count);
+
+                                answered = true;
+                                Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
+
+                                dialog.dismiss();
+                                openResultDialog();
+
+                            }
+                        });
                     }
-                });
-
-                AlertDialog.Builder myBuilder = new AlertDialog.Builder(final_demo.this);
-                View myView = getLayoutInflater().inflate(R.layout.vote_dialog,null);
-
-                questionView = (TextView) findViewById(R.id.questionText);
-                vote1View = (TextView) findViewById(R.id.op1votebutton);
-                vote2View = (TextView) findViewById(R.id.op2votebutton);
 
 
-                myBuilder.setView(myView);
-                final AlertDialog dialog =myBuilder.create();
-
-
-
-
-                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
-                dialog.show();
-
-                dialog.getWindow().setLayout( 2000,1000 );
-
-                questionView.setText(question);
-                vote1View.setText(option1);
-                vote2View.setText(option2);
-
-
-            }
-        });
+                }
+            });
 
 
 

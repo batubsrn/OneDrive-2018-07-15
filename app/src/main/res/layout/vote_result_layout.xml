@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
+    <ProgressBar
+        android:id="@+id/vote1progressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="104dp"
+
+        android:layout_height="33dp"
+
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/vote2progressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="104dp"
+
+        android:layout_height="32dp"
+
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="56dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vote1progressbar" />
+
+    <TextView
+        android:id="@+id/vote1BarPercentText"
+        android:layout_width="wrap_content"
+        android:layout_height="31dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:text="vote1percent"
+        app:layout_constraintStart_toEndOf="@+id/vote1progressbar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/vote2BarPercentText"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+
+        android:layout_marginStart="16dp"
+
+        android:layout_marginTop="56dp"
+        android:text="vote2percent"
+        app:layout_constraintStart_toEndOf="@+id/vote2progressbar"
+        app:layout_constraintTop_toBottomOf="@+id/vote1BarPercentText" />
 
 </android.support.constraint.ConstraintLayout>
