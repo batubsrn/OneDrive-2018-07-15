@@ -2,6 +2,8 @@ package com.example.batub.newsurveyapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -158,27 +160,12 @@ public class MainActivity extends AppCompatActivity {
                 refLocation.child("minute_range").setValue(minuteRange);
                 refLocation.child("enter_time").setValue(enterTime);
 
+                SharedPreferences mypref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = mypref.edit();
 
+                editor.putBoolean("isAnswered",false);
+                editor.commit();
 
-
-
-               /* myref2.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                       // textView7.setText(dataSnapshot.getValue(String.class));
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-                */
-
-
-             //   refLocation.child("question").setValue(value);
-              //  refLocation.child("answer").setValue(value2);
-               // refLocation.child("answer2").setValue(value3);
 
                 editText.getText().clear();
                 editText2.getText().clear();
@@ -207,23 +194,11 @@ public class MainActivity extends AppCompatActivity {
             super.onResume();
         }
 
-
-
-
-
-
     public void goToDisplayPage(View view){
 
         Intent intent = new Intent(this,displaypage.class);
-
-       /* Bundle extras =new Bundle() ;
-        extras.putLong("ENTER_TIME",enterTime );
-        extras.putLong("MINUTE_RANGE",minuteRange );
-        intent.putExtras(extras);*/
-
         startActivity(intent);
         overridePendingTransition(R.anim.fadein,R.anim.fadein);
-
 
     }
 

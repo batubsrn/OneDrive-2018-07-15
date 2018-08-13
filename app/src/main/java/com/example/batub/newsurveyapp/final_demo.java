@@ -1,7 +1,11 @@
 package com.example.batub.newsurveyapp;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
+import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -58,13 +62,13 @@ public class final_demo extends Activity {
 
     TextView boolTestView;
 
-    TextView questionView;
+    TextView questionView , timeText ;
     Button vote1Button, vote2Button;
 
     FirebaseDatabase voteDatabase;
     DatabaseReference questionReference , voteCountReference, progressBarReference ;
 
-    //    String question, option1,option2 ;
+     String question, option1,option2 ;
 
     Long vote1Count,vote2Count ;
 
@@ -74,16 +78,23 @@ public class final_demo extends Activity {
     static Double d3;
     static Double d4;
 
+    long timeLeft;
+
     ProgressBar percent1Progress,percent2Progress;
 
     TextView vote1BarPercent, vote2BarPercent ;
+    TextView vote1ResultText ,vote2ResultText;
 
+    SharedPreferences preferences;
 
 
     public void openResultDialog() {
 
         AlertDialog.Builder myBuilder2 = new AlertDialog.Builder(final_demo.this);
         View myView2 = getLayoutInflater().inflate(R.layout.vote_result_layout,null);
+
+        vote1ResultText = (TextView)  myView2.findViewById(R.id.vote1ResultText);
+        vote2ResultText = (TextView)  myView2.findViewById(R.id.vote2ResultText);
 
         percent1Progress = (ProgressBar) myView2.findViewById(R.id.vote1progressbar);
         percent2Progress = (ProgressBar) myView2.findViewById(R.id.vote2progressbar);
@@ -134,6 +145,23 @@ public class final_demo extends Activity {
             }
         });
 
+        questionReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String option1text = dataSnapshot.child("cevap1").getValue(String.class);
+                String option2text = dataSnapshot.child("cevap2").getValue(String.class);
+                vote1ResultText.setText(option1text);
+                vote2ResultText.setText(option2text);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
 
         myBuilder2.setView(myView2);
         final AlertDialog dialog =myBuilder2.create();
@@ -146,10 +174,6 @@ public class final_demo extends Activity {
 
 
     }
-
-
-
-
 
 
     @Override
@@ -213,11 +237,14 @@ public class final_demo extends Activity {
 
         ///////////////////////// VOTING ALERT DIALOG
 
-
-
             voteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+
+                    answered = preferences.getBoolean("isAnswered",false);
 
                     if(answered){
                         openResultDialog();
@@ -232,14 +259,21 @@ public class final_demo extends Activity {
                         questionView = (TextView) myView.findViewById(R.id.questionText);
                         vote1Button = (Button) myView.findViewById(R.id.op1votebutton);
                         vote2Button = (Button) myView.findViewById(R.id.op2votebutton);
+                        timeText = (TextView) myView.findViewById(R.id.timeText); // count down timer
 
                         questionReference.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                               String  question = dataSnapshot.child("soru").getValue(String.class);
-                               String option1 = dataSnapshot.child("cevap1").getValue(String.class);
-                               String  option2 = dataSnapshot.child("cevap2").getValue(String.class);
+                                 question = dataSnapshot.child("soru").getValue(String.class);
+                                option1 = dataSnapshot.child("cevap1").getValue(String.class);
+                                 option2 = dataSnapshot.child("cevap2").getValue(String.class);
+
+                                 Long entryTime = dataSnapshot.child("enter_time").getValue(Long.class);
+                                 Long minRange = dataSnapshot.child("minute_range").getValue(Long.class);
+
+                                 Long time = Calendar.getInstance().getTimeInMillis();
+                                 final long countdownMills = ( minRange *60000 ) -   (time-entryTime) ;
 
                                Log.e("question",question);
                                 Log.e("option1",option1);
@@ -249,6 +283,19 @@ public class final_demo extends Activity {
                                 vote1Button.setText(option1);
                                 vote2Button.setText(option2);
 
+                                  timeLeft = countdownMills ;
+
+                                new CountDownTimer(timeLeft, 1000){
+                                    public void onTick(long millisUntilFinished){
+                                        timeText.setText(String.valueOf ( timeLeft/1000 ) );
+                                        timeLeft = timeLeft -1000;
+                                    }
+                                    public  void onFinish(){
+
+                                    }
+                                }.start();
+
+
                             }
 
                             @Override
@@ -256,6 +303,8 @@ public class final_demo extends Activity {
 
                             }
                         });
+
+
 
                         myBuilder.setView(myView);
                         final AlertDialog dialog =myBuilder.create();
@@ -292,7 +341,13 @@ public class final_demo extends Activity {
                                 vote1Count= vote1Count+1;
                                 voteCountReference.child("vote1").setValue(vote1Count);
 
-                                answered = true;
+                                SharedPreferences.Editor editor = preferences.edit();
+
+                                editor.putBoolean("isAnswered",true);
+                                editor.commit();
+
+                                //answered = true;
+
                                 Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
 
                                 dialog.dismiss();
@@ -307,7 +362,14 @@ public class final_demo extends Activity {
                                 vote2Count= vote2Count+1;
                                 voteCountReference.child("vote2").setValue(vote2Count);
 
-                                answered = true;
+                                SharedPreferences.Editor editor = preferences.edit();
+
+                                editor.putBoolean("isAnswered",true);
+                                editor.commit();
+
+
+                                //answered = true;
+
                                 Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
 
                                 dialog.dismiss();
@@ -321,11 +383,7 @@ public class final_demo extends Activity {
                 }
             });
 
-
-
-        ///////////////////////////////////////////
-
-
+            ///////////////////////////////////////////
 
     }
 
@@ -372,6 +430,7 @@ public class final_demo extends Activity {
         if (Util.SDK_INT > 23) {
             initializePlayer();
         }
+
     }
 
     @Override
