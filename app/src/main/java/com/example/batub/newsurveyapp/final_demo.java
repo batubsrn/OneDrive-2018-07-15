@@ -173,9 +173,6 @@ public class final_demo extends Activity {
                 final AlertDialog dialog =myBuilder.create();
 
 
-                questionView.setText(question);
-                vote1View.setText(option1);
-                vote2View.setText(option2);
 
 
                 dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
@@ -183,6 +180,9 @@ public class final_demo extends Activity {
 
                 dialog.getWindow().setLayout( 2000,1000 );
 
+                questionView.setText(question);
+                vote1View.setText(option1);
+                vote2View.setText(option2);
 
 
             }
