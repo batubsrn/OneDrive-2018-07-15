@@ -47,7 +47,7 @@ import java.util.Calendar;
 import static com.example.batub.newsurveyapp.database_page.d3;
 
 
-public class final_demo extends Activity {
+public class fragmentTest extends Activity {
 
 
 
@@ -69,7 +69,7 @@ public class final_demo extends Activity {
     FirebaseDatabase voteDatabase;
     DatabaseReference questionReference , voteCountReference, progressBarReference ;
 
-     String question, option1,option2 ;
+    String question, option1,option2 ;
 
     Long vote1Count,vote2Count ;
 
@@ -94,7 +94,7 @@ public class final_demo extends Activity {
 
     public void openResultDialog() {
 
-        AlertDialog.Builder myBuilder2 = new AlertDialog.Builder(final_demo.this);
+        AlertDialog.Builder myBuilder2 = new AlertDialog.Builder(fragmentTest.this);
         View myView2 = getLayoutInflater().inflate(R.layout.vote_result_layout,null);
 
         vote1ResultText = (TextView)  myView2.findViewById(R.id.vote1ResultText);
@@ -118,8 +118,8 @@ public class final_demo extends Activity {
                 String vote1CountStr = String.valueOf(vote1Count);
                 String vote2CountStr=String.valueOf(vote2Count);
 
-               // vote1percent.setText(vote1CountStr);
-               // vote2percent.setText( vote2CountStr );
+                // vote1percent.setText(vote1CountStr);
+                // vote2percent.setText( vote2CountStr );
 
                 d3=vote1Count.doubleValue();        //  vote 1 real count convert to double for decimal
                 d4=vote2Count.doubleValue();         // vote 2 real count    "      "   "   "       "
@@ -184,7 +184,7 @@ public class final_demo extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.final_demo_layout);
+        setContentView(R.layout.activity_fragment_test);
 
         boolTestView= (TextView) findViewById(R.id.booltesttext) ;
         voteButton = (FloatingActionButton) findViewById(R.id.fab5);
@@ -217,19 +217,19 @@ public class final_demo extends Activity {
 
                 long timeDiff =  (phoneTime - enterTime);
 
-                        if (votingRangeMills > timeDiff) {
-                            onTime = true;
-                            Log.e("ontime","true");
+                if (votingRangeMills > timeDiff) {
+                    onTime = true;
+                    Log.e("ontime","true");
 
-                            boolTestView.setVisibility(View.VISIBLE);
-                            voteButton.setVisibility(View.VISIBLE);
+                    boolTestView.setVisibility(View.VISIBLE);
+                    voteButton.setVisibility(View.VISIBLE);
 
-                        } else if ( votingRangeMills < timeDiff ){
-                            Log.e("ontime","false");
-                            onTime=false;
-                            boolTestView.setVisibility(View.GONE);
-                            voteButton.setVisibility(View.GONE);
-                        }
+                } else if ( votingRangeMills < timeDiff ){
+                    Log.e("ontime","false");
+                    onTime=false;
+                    boolTestView.setVisibility(View.GONE);
+                    voteButton.setVisibility(View.GONE);
+                }
 
 
             }
@@ -243,162 +243,162 @@ public class final_demo extends Activity {
         ///////////////////////// VOTING ALERT DIALOG
         timerFirstTime =true;
 
-            voteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+        voteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
 
-                    preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 
-                    answered = preferences.getBoolean("isAnswered",false);
+                answered = preferences.getBoolean("isAnswered",false);
 
-                    if(answered){
-                        openResultDialog();
-                    }
-
-                    /// Get questions and display them
-
-                    if (answered==false){
-                        final AlertDialog.Builder myBuilder = new AlertDialog.Builder(final_demo.this);
-                        View myView = getLayoutInflater().inflate(R.layout.vote_dialog,null);
-
-                        questionView = (TextView) myView.findViewById(R.id.questionText);
-                        vote1Button = (Button) myView.findViewById(R.id.op1votebutton);
-                        vote2Button = (Button) myView.findViewById(R.id.op2votebutton);
-                        timeText = (TextView) myView.findViewById(R.id.timeText); // count down timer
-
-                        questionReference.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                 question = dataSnapshot.child("soru").getValue(String.class);
-                                option1 = dataSnapshot.child("cevap1").getValue(String.class);
-                                 option2 = dataSnapshot.child("cevap2").getValue(String.class);
-
-                                 Long entryTime = dataSnapshot.child("enter_time").getValue(Long.class);
-                                 Long minRange = dataSnapshot.child("minute_range").getValue(Long.class);
-
-                                 Long time = Calendar.getInstance().getTimeInMillis();
-                                 final long countdownMills = ( minRange *60000 ) -   (time-entryTime) ;
-
-                               Log.e("question",question);
-                                Log.e("option1",option1);
-                                Log.e("option2",option2);
-
-                               questionView.setText(question);
-                                vote1Button.setText(option1);
-                                vote2Button.setText(option2);
-
-                                  timeLeft = countdownMills ;
-
-                                if (timerFirstTime) {
-                                    new CountDownTimer(timeLeft, 1000){
-                                        public void onTick(long millisUntilFinished){
-                                            timeText.setText(String.valueOf ( timeLeft/1000 ) );
-                                            timeLeft = timeLeft -1000;
-                                        }
-                                        public  void onFinish(){
-                                            dialog.dismiss();
-                                            dialog2.dismiss();
-                                            voteButton.setVisibility(View.GONE);
-                                            boolTestView.setVisibility(View.GONE);
-
-                                        }
-                                    }.start();
-
-                                    timerFirstTime =false;
-                                }
-
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-
-
-
-                        myBuilder.setView(myView);
-                         dialog =myBuilder.create();
-
-                        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
-                        dialog.show();
-
-                        dialog.getWindow().setLayout( 800,480);
-
-                        voteCountReference= voteDatabase.getReference().child("votecount").child("1");
-
-                        voteCountReference.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                vote1Count = dataSnapshot.child("vote1").getValue(Long.class);
-                                vote2Count = dataSnapshot.child("vote2").getValue(Long.class);
-                                Log.e("vote1", String.valueOf(vote1Count) );
-                                Log.e("vote2", String.valueOf(vote2Count) );
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-
-                            }
-                        });
-
-                        vote1Button.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-
-
-                                vote1Count= vote1Count+1;
-                                voteCountReference.child("vote1").setValue(vote1Count);
-
-                                SharedPreferences.Editor editor = preferences.edit();
-
-                                editor.putBoolean("isAnswered",true);
-                                editor.commit();
-
-                                //answered = true;
-
-                                Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
-
-                                dialog.dismiss();
-                                openResultDialog();
-                            }
-                        });
-
-                        vote2Button.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-
-                                vote2Count= vote2Count+1;
-                                voteCountReference.child("vote2").setValue(vote2Count);
-
-                                SharedPreferences.Editor editor = preferences.edit();
-
-                                editor.putBoolean("isAnswered",true);
-                                editor.commit();
-
-
-                                //answered = true;
-
-                                Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
-
-                                dialog.dismiss();
-                                openResultDialog();
-
-                            }
-                        });
-                    }
-
-
+                if(answered){
+                    openResultDialog();
                 }
-            });
 
-            ///////////////////////////////////////////
+                /// Get questions and display them
+
+                if (answered==false){
+                    final AlertDialog.Builder myBuilder = new AlertDialog.Builder(fragmentTest.this);
+                    View myView = getLayoutInflater().inflate(R.layout.vote_dialog,null);
+
+                    questionView = (TextView) myView.findViewById(R.id.questionText);
+                    vote1Button = (Button) myView.findViewById(R.id.op1votebutton);
+                    vote2Button = (Button) myView.findViewById(R.id.op2votebutton);
+                    timeText = (TextView) myView.findViewById(R.id.timeText); // count down timer
+
+                    questionReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            question = dataSnapshot.child("soru").getValue(String.class);
+                            option1 = dataSnapshot.child("cevap1").getValue(String.class);
+                            option2 = dataSnapshot.child("cevap2").getValue(String.class);
+
+                            Long entryTime = dataSnapshot.child("enter_time").getValue(Long.class);
+                            Long minRange = dataSnapshot.child("minute_range").getValue(Long.class);
+
+                            Long time = Calendar.getInstance().getTimeInMillis();
+                            final long countdownMills = ( minRange *60000 ) -   (time-entryTime) ;
+
+                            Log.e("question",question);
+                            Log.e("option1",option1);
+                            Log.e("option2",option2);
+
+                            questionView.setText(question);
+                            vote1Button.setText(option1);
+                            vote2Button.setText(option2);
+
+                            timeLeft = countdownMills ;
+
+                            if (timerFirstTime) {
+                                new CountDownTimer(timeLeft, 1000){
+                                    public void onTick(long millisUntilFinished){
+                                        timeText.setText(String.valueOf ( timeLeft/1000 ) );
+                                        timeLeft = timeLeft -1000;
+                                    }
+                                    public  void onFinish(){
+                                        dialog.dismiss();
+                                        dialog2.dismiss();
+                                        voteButton.setVisibility(View.GONE);
+                                        boolTestView.setVisibility(View.GONE);
+
+                                    }
+                                }.start();
+
+                                timerFirstTime =false;
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
+                    myBuilder.setView(myView);
+                    dialog =myBuilder.create();
+
+                    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
+                    dialog.show();
+
+                    dialog.getWindow().setLayout( 800,480);
+
+                    voteCountReference= voteDatabase.getReference().child("votecount").child("1");
+
+                    voteCountReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            vote1Count = dataSnapshot.child("vote1").getValue(Long.class);
+                            vote2Count = dataSnapshot.child("vote2").getValue(Long.class);
+                            Log.e("vote1", String.valueOf(vote1Count) );
+                            Log.e("vote2", String.valueOf(vote2Count) );
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+
+                        }
+                    });
+
+                    vote1Button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+
+                            vote1Count= vote1Count+1;
+                            voteCountReference.child("vote1").setValue(vote1Count);
+
+                            SharedPreferences.Editor editor = preferences.edit();
+
+                            editor.putBoolean("isAnswered",true);
+                            editor.commit();
+
+                            //answered = true;
+
+                            Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
+
+                            dialog.dismiss();
+                            openResultDialog();
+                        }
+                    });
+
+                    vote2Button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            vote2Count= vote2Count+1;
+                            voteCountReference.child("vote2").setValue(vote2Count);
+
+                            SharedPreferences.Editor editor = preferences.edit();
+
+                            editor.putBoolean("isAnswered",true);
+                            editor.commit();
+
+
+                            //answered = true;
+
+                            Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
+
+                            dialog.dismiss();
+                            openResultDialog();
+
+                        }
+                    });
+                }
+
+
+            }
+        });
+
+        ///////////////////////////////////////////
 
     }
 

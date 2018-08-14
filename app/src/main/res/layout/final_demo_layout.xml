@@ -25,7 +25,7 @@
         android:id="@+id/booltesttext"
         android:layout_alignParentTop="true"
         android:layout_marginTop="13dp"
-        android:text=" minute range" />
+        android:text=" You got a vote" />
 
     <android.support.design.widget.FloatingActionButton
 

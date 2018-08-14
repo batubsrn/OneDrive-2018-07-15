@@ -32,10 +32,9 @@
             android:name=".final_activity"
             android:screenOrientation="landscape" />
         <activity
-            android:screenOrientation="landscape"
-            android:name=".final_demo" />
-
-
+            android:name=".final_demo"
+            android:screenOrientation="landscape" />
+        <activity android:name=".fragmentTest"></activity>
     </application>
 
 </manifest>

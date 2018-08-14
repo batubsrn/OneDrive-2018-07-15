@@ -216,4 +216,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public  void fragmentDemo(View view){
+         Intent fragintent =new Intent(this,fragmentTest.class);
+         startActivity(fragintent);
+    }
+
 }

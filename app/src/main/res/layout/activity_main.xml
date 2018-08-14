@@ -103,9 +103,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/editText2"
         android:layout_marginBottom="185dp"
-        android:text="finale_construct"
-        android:onClick="goToFinale"
-        />
+        android:onClick="fragmentDemo"
+        android:text="fragment test" />
 
     <Button
         android:id="@+id/final_demo_button"
