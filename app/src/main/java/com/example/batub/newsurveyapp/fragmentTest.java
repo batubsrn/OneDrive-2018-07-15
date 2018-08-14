@@ -9,6 +9,10 @@ import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTabHost;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -248,6 +252,7 @@ public class fragmentTest extends Activity {
             public void onClick(View view) {
 
 
+
                 preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 
@@ -472,5 +477,14 @@ public class fragmentTest extends Activity {
         }
     }
 
+    public  void fragmentShow() {
+
+        /*FragmentManager manager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = manager.beginTransaction();
+
+        Fragment f1 = new voteShowFragment();
+        fragmentTransaction.add(R.id.voteFragmentContainer,f1);
+        fragmentTransaction.commit();*/
+    }
 
 }

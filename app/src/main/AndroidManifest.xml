@@ -34,7 +34,9 @@
         <activity
             android:name=".final_demo"
             android:screenOrientation="landscape" />
-        <activity android:name=".fragmentTest"></activity>
+        <activity
+            android:name=".fragmentTest"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>
