@@ -10,14 +10,17 @@ import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTabHost;
+
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,13 +48,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DecimalFormat;
+
 import java.util.Calendar;
 
 import static com.example.batub.newsurveyapp.database_page.d3;
 
 
-public class fragmentTest extends Activity {
+public class fragmentTest extends FragmentActivity {
 
 
 
@@ -95,11 +98,19 @@ public class fragmentTest extends Activity {
 
     AlertDialog dialog ,dialog2 ;
 
+    ////////////////////////////////////////////////////77
 
-    public void openResultDialog() {
+    FrameLayout frameLayout ;
+    Fragment f1 ;
 
-        AlertDialog.Builder myBuilder2 = new AlertDialog.Builder(fragmentTest.this);
-        View myView2 = getLayoutInflater().inflate(R.layout.vote_result_layout,null);
+    FragmentManager manager;
+    FragmentTransaction transaction ;
+
+
+    public void openResultDialog(){
+
+
+        View myView2 = getLayoutInflater().inflate(R.layout.fragment_vote_show,null);
 
         vote1ResultText = (TextView)  myView2.findViewById(R.id.vote1ResultText);
         vote2ResultText = (TextView)  myView2.findViewById(R.id.vote2ResultText);
@@ -170,17 +181,6 @@ public class fragmentTest extends Activity {
         });
 
 
-
-        myBuilder2.setView(myView2);
-        dialog2 =myBuilder2.create();
-
-        dialog2.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
-        dialog2.show();
-
-        dialog2.getWindow().setLayout( 800,480);
-
-
-
     }
 
 
@@ -247,26 +247,45 @@ public class fragmentTest extends Activity {
         ///////////////////////// VOTING ALERT DIALOG
         timerFirstTime =true;
 
+         frameLayout = (FrameLayout) findViewById(R.id.voteFragmentContainer);
+         f1 = new voteShowFragment();
+
+
+
+
         voteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                manager = getSupportFragmentManager();
+                transaction = manager.beginTransaction();
+
+                transaction.replace(R.id.voteFragmentContainer,f1);
+                transaction.commit();
 
 
+
+
+
+/*
                 preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-
                 answered = preferences.getBoolean("isAnswered",false);
-
                 if(answered){
                     openResultDialog();
                 }
 
+
+
+
+
+
+
+
                 /// Get questions and display them
 
                 if (answered==false){
-                    final AlertDialog.Builder myBuilder = new AlertDialog.Builder(fragmentTest.this);
-                    View myView = getLayoutInflater().inflate(R.layout.vote_dialog,null);
+
+                    View myView = getLayoutInflater().inflate(R.layout.fragment_vote_show,null);
 
                     questionView = (TextView) myView.findViewById(R.id.questionText);
                     vote1Button = (Button) myView.findViewById(R.id.op1votebutton);
@@ -304,8 +323,7 @@ public class fragmentTest extends Activity {
                                         timeLeft = timeLeft -1000;
                                     }
                                     public  void onFinish(){
-                                        dialog.dismiss();
-                                        dialog2.dismiss();
+
                                         voteButton.setVisibility(View.GONE);
                                         boolTestView.setVisibility(View.GONE);
 
@@ -325,14 +343,6 @@ public class fragmentTest extends Activity {
                     });
 
 
-
-                    myBuilder.setView(myView);
-                    dialog =myBuilder.create();
-
-                    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
-                    dialog.show();
-
-                    dialog.getWindow().setLayout( 800,480);
 
                     voteCountReference= voteDatabase.getReference().child("votecount").child("1");
 
@@ -370,7 +380,7 @@ public class fragmentTest extends Activity {
 
                             Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
 
-                            dialog.dismiss();
+
                             openResultDialog();
                         }
                     });
@@ -392,15 +402,16 @@ public class fragmentTest extends Activity {
 
                             Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
 
-                            dialog.dismiss();
+
                             openResultDialog();
 
                         }
-                    });
+                    });*/
                 }
 
 
-            }
+
+
         });
 
         ///////////////////////////////////////////
@@ -479,12 +490,7 @@ public class fragmentTest extends Activity {
 
     public  void fragmentShow() {
 
-        /*FragmentManager manager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = manager.beginTransaction();
 
-        Fragment f1 = new voteShowFragment();
-        fragmentTransaction.add(R.id.voteFragmentContainer,f1);
-        fragmentTransaction.commit();*/
     }
 
 }
