@@ -63,8 +63,7 @@ public class final_demo extends Activity {
 
     TextView boolTestView;
 
-    TextView questionView , timeText ;
-    Button vote1Button, vote2Button;
+
 
     FirebaseDatabase voteDatabase;
     DatabaseReference questionReference , voteCountReference, progressBarReference ;
@@ -73,9 +72,13 @@ public class final_demo extends Activity {
 
     Long vote1Count,vote2Count ;
 
+    TextView questionView , timeText ;
+    Button vote1Button, vote2Button;
+
     Boolean onTime;
     boolean answered;
     boolean timerFirstTime;
+    SharedPreferences preferences;
 
     static Double d3;
     static Double d4;
@@ -87,7 +90,7 @@ public class final_demo extends Activity {
     TextView vote1BarPercent, vote2BarPercent ;
     TextView vote1ResultText ,vote2ResultText;
 
-    SharedPreferences preferences;
+
 
     AlertDialog dialog ,dialog2 ;
 
@@ -102,6 +105,7 @@ public class final_demo extends Activity {
 
         percent1Progress = (ProgressBar) myView2.findViewById(R.id.vote1progressbar);
         percent2Progress = (ProgressBar) myView2.findViewById(R.id.vote2progressbar);
+
         vote1BarPercent = (TextView) myView2.findViewById(R.id.vote1BarPercentText);
         vote2BarPercent = (TextView) myView2.findViewById(R.id.vote2BarPercentText);
 

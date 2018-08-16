@@ -4,12 +4,16 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -52,7 +56,7 @@ public class fragmented_vote_activity extends AppCompatActivity {
 
     FloatingActionButton voteButton;
 
-    TextView boolTestView;
+   // TextView boolTestView;
 
     TextView questionView , timeText ;
     Button vote1Button, vote2Button;
@@ -83,6 +87,16 @@ public class fragmented_vote_activity extends AppCompatActivity {
     AlertDialog dialog ,dialog2 ;
 
 
+    //////////////////////////////////////////////////////////7
+
+    Fragment fragment;
+
+    FragmentTransaction transaction;
+    FragmentManager manager;
+
+    FrameLayout myContainer;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -98,8 +112,9 @@ public class fragmented_vote_activity extends AppCompatActivity {
         ImageView ivHideControllerButton = (ImageView) findViewById(R.id.exo_controller);
 
 
-        boolTestView= (TextView) findViewById(R.id.booltesttext) ;
+        // boolTestView= (TextView) findViewById(R.id.booltesttext) ;
         voteButton = (FloatingActionButton) findViewById(R.id.fab5);
+
 
 
         ////////////////// DATABASE REFERENCES
@@ -126,13 +141,13 @@ public class fragmented_vote_activity extends AppCompatActivity {
                     onTime = true;
                     Log.e("ontime","true");
 
-                    boolTestView.setVisibility(View.VISIBLE);
+                    // boolTestView.setVisibility(View.VISIBLE);
                     voteButton.setVisibility(View.VISIBLE);
 
                 } else if ( votingRangeMills < timeDiff ){
                     Log.e("ontime","false");
                     onTime=false;
-                    boolTestView.setVisibility(View.GONE);
+                    // boolTestView.setVisibility(View.GONE);
                     voteButton.setVisibility(View.GONE);
                 }
 
@@ -144,6 +159,32 @@ public class fragmented_vote_activity extends AppCompatActivity {
 
             }
         }) ;
+
+
+        myContainer =findViewById(R.id.container1);
+
+        fragment = new votingFragment();
+
+        voteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                manager = getSupportFragmentManager();
+
+                transaction = manager.beginTransaction();
+
+                transaction.replace(R.id.container1, fragment);
+
+                transaction.commit();
+
+            }
+        });
+
+
+
+
+
 
 
     }
