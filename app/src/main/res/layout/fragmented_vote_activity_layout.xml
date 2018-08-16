@@ -11,8 +11,10 @@
         android:id="@+id/player_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="0dp"
+        android:layout_marginEnd="0dp"
         android:focusable="true" />
 
     <TextView
@@ -29,28 +31,13 @@
 
         android:id="@+id/fab5"
 
-        android:onClick="openVoteFragment"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="77dp"
+        android:layout_marginEnd="29dp"
         app:srcCompat="@android:drawable/ic_dialog_email" />
-
-    <fragment
-        android:id="@+id/fragmentContainer"
-        android:layout_width="240dp"
-        android:layout_height="220dp"
-        android:layout_alignParentEnd="true"
-        android:visibility="visible"
-
-
-        android:layout_centerVertical="true">
-
-    </fragment>
-
 </RelativeLayout>
-

@@ -54,7 +54,7 @@ import java.util.Calendar;
 import static com.example.batub.newsurveyapp.database_page.d3;
 
 
-public class fragmentTest extends FragmentActivity {
+public class fragmentTest extends AppCompatActivity {
 
 
 
@@ -98,19 +98,20 @@ public class fragmentTest extends FragmentActivity {
 
     AlertDialog dialog ,dialog2 ;
 
-    ////////////////////////////////////////////////////77
+    ////////////////////////////////////////////////////
 
-    FrameLayout frameLayout ;
-    Fragment f1 ;
+    Fragment voteFragment;
+
 
     FragmentManager manager;
     FragmentTransaction transaction ;
 
+/*
 
     public void openResultDialog(){
 
 
-        View myView2 = getLayoutInflater().inflate(R.layout.fragment_vote_show,null);
+        View myView2 = getLayoutInflater().inflate(R.layout.fragment_voting,null);
 
         vote1ResultText = (TextView)  myView2.findViewById(R.id.vote1ResultText);
         vote2ResultText = (TextView)  myView2.findViewById(R.id.vote2ResultText);
@@ -182,6 +183,7 @@ public class fragmentTest extends FragmentActivity {
 
 
     }
+*/
 
 
     @Override
@@ -247,8 +249,7 @@ public class fragmentTest extends FragmentActivity {
         ///////////////////////// VOTING ALERT DIALOG
         timerFirstTime =true;
 
-         frameLayout = (FrameLayout) findViewById(R.id.voteFragmentContainer);
-         f1 = new voteShowFragment();
+
 
 
 
@@ -257,10 +258,12 @@ public class fragmentTest extends FragmentActivity {
             @Override
             public void onClick(View view) {
 
+                Fragment voteFragment =  new votingFragment();
+
                 manager = getSupportFragmentManager();
                 transaction = manager.beginTransaction();
 
-                transaction.replace(R.id.voteFragmentContainer,f1);
+                transaction.replace(R.id.fragmentContainer,voteFragment);
                 transaction.commit();
 
 
@@ -274,14 +277,7 @@ public class fragmentTest extends FragmentActivity {
                     openResultDialog();
                 }
 
-
-
-
-
-
-
-
-                /// Get questions and display them
+             /// Get questions and display them
 
                 if (answered==false){
 

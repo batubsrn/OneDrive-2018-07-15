@@ -198,9 +198,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToDisplayPage(View view){
 
-        Intent intent = new Intent(this,displaypage.class);
+        Intent intent = new Intent(this,fragmented_vote_activity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.fadein,R.anim.fadein);
+
 
     }
 

@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.batub.newsurveyapp">
 
-
-    <permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" android:protectionLevel="signature"/>
-
+    <permission
+        android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
+        android:protectionLevel="signature" />
 
     <application
         android:allowBackup="true"
@@ -41,6 +41,12 @@
         <activity
             android:name=".fragmentTest"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".fragmented_vote_activity"
+            android:screenOrientation="landscape"
+
+            />
+
     </application>
 
 </manifest>
