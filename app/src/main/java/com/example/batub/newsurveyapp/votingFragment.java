@@ -299,10 +299,13 @@ public class votingFragment extends Fragment {
                 vote1Count= vote1Count+1;
                 voteCountReference.child("vote1").setValue(vote1Count);
 
-                /*SharedPreferences.Editor editor = preferences.edit();
+                SharedPreferences.Editor editor = preferences.edit();
+
+
 
                 editor.putBoolean("isAnswered",true);
-                editor.commit();*/
+
+                editor.commit();
 
                 //answered = true;
 
@@ -336,11 +339,11 @@ public class votingFragment extends Fragment {
                 vote2Count= vote2Count+1;
                 voteCountReference.child("vote2").setValue(vote2Count);
 
-               /* SharedPreferences.Editor editor = preferences.edit();
+               SharedPreferences.Editor editor = preferences.edit();
 
                 editor.putBoolean("isAnswered",true);
                 editor.commit();
-*/
+
                 //answered = true;
 
                 Toast.makeText(getActivity(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
