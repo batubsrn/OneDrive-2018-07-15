@@ -253,9 +253,9 @@ public class final_demo extends Activity {
 
 
                     preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-
                     answered = preferences.getBoolean("isAnswered",false);
+
+
 
                     if(answered){
                         openResultDialog();

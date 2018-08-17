@@ -11,12 +11,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -53,6 +56,8 @@ public class fragmented_vote_activity extends AppCompatActivity {
     private BandwidthMeter bandwidthMeter;
 
     /////////////////////////////////////////////////////////////
+
+    ImageButton closeButton2 ;
 
     FloatingActionButton voteButton;
 
@@ -115,6 +120,10 @@ public class fragmented_vote_activity extends AppCompatActivity {
         // boolTestView= (TextView) findViewById(R.id.booltesttext) ;
         voteButton = (FloatingActionButton) findViewById(R.id.fab5);
 
+        /*closeButton2 = (ImageButton) findViewById(R.id.imagebuttonclosefrag);
+
+        closeButton2.setVisibility(View.GONE);*/
+
 
 
         ////////////////// DATABASE REFERENCES
@@ -161,6 +170,8 @@ public class fragmented_vote_activity extends AppCompatActivity {
         }) ;
 
 
+
+
         myContainer =findViewById(R.id.container1);
 
         fragment = new votingFragment();
@@ -170,17 +181,36 @@ public class fragmented_vote_activity extends AppCompatActivity {
             public void onClick(View view) {
 
 
+
+                voteButton.setVisibility(View.GONE);
+
                 manager = getSupportFragmentManager();
 
                 transaction = manager.beginTransaction();
+                transaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_right);
 
-                transaction.replace(R.id.container1, fragment);
-
+                transaction.add(R.id.container1, fragment,"myFrag");
+                transaction.addToBackStack(null);
                 transaction.commit();
+
 
             }
         });
 
+
+
+
+        View simpleExoPlayerView=findViewById(R.id.player_view);
+        simpleExoPlayerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                Log.e("on touch","video player touched?");
+
+
+                return false;
+            }
+        });
 
 
 
@@ -214,6 +244,7 @@ public class fragmented_vote_activity extends AppCompatActivity {
                 mediaDataSourceFactory, extractorsFactory, null, null);
 
         player.prepare(mediaSource);
+
 
 
     }
@@ -260,7 +291,11 @@ public class fragmented_vote_activity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        voteButton.setVisibility(View.VISIBLE);
+    }
 }
 
 

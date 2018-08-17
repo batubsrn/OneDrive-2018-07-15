@@ -1,18 +1,23 @@
 package com.example.batub.newsurveyapp;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +47,7 @@ public class votingFragment extends Fragment {
     Long vote1Count,vote2Count ;
 
 
+    // ImageButton closeButton;
 
     ProgressBar pb1 ,pb2 ;
     TextView questionText, vote1percenttext,vote2percenttext;
@@ -70,6 +76,17 @@ public class votingFragment extends Fragment {
 
     public void openResults() {
 
+        button1.setVisibility(View.GONE);
+        button2.setVisibility(View.GONE);
+
+        pb1.setVisibility(View.VISIBLE); // option 1 bar display
+        pb2.setVisibility(View.VISIBLE);
+
+        vote1text.setVisibility(View.VISIBLE); //option 1 display
+        vote2text.setVisibility(View.VISIBLE);
+
+        vote1percenttext.setVisibility(View.VISIBLE); //option 1 percent display
+        vote2percenttext.setVisibility(View.VISIBLE);
 
         vote1text = (TextView)  fragView.findViewById(R.id.vote1textfrag);
         vote2text = (TextView)  fragView.findViewById(R.id.vote2textfrag);
@@ -163,6 +180,8 @@ public class votingFragment extends Fragment {
 
          fragView = inflater.inflate(R.layout.fragment_voting, container, false);
 
+        // closeButton = (ImageButton)  fragView.findViewById(R.id.imageButton2);
+
         pb1 = (ProgressBar)fragView.findViewById(R.id.progressBar1frag);
         pb2 = (ProgressBar)fragView.findViewById(R.id.progressBar2frag);
 
@@ -192,24 +211,45 @@ public class votingFragment extends Fragment {
         questionReference = voteDatabase.getReference().child("deneme");
         voteCountReference= voteDatabase.getReference().child("votecount").child("1");
 
+////////////////////////////////////////////
+/*
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Fragment f2 = null;
+                FragmentManager manager2 = getFragmentManager();
+                FragmentTransaction transaction2 = manager2.beginTransaction();
+
+                transaction2.replace(R.id.container1,f2);
+                transaction2.commit();
+
+
+            }
+        });*/
+
 
         ////////////////////
         timerFirstTime = true;
 
-        /*preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext() );
 
+
+        answered = preferences.getBoolean("answered yes no",false);
+
+       /* preferences = getActivity().getSharedPreferences("mypref", Context.MODE_PRIVATE);
 
         answered = preferences.getBoolean("isAnswered",false);
-        Log.e("answered",String.valueOf(answered) );*/
-
-        /*if(answered){
-            openResults();
-        }*/
+*/
+        Log.e(" answered",String.valueOf(answered) );
 
         /// Get questions and display them
 
 
-
+        if(answered){
+            openResults();
+        }
+        else if (answered==false) {
             questionText = (TextView) fragView.findViewById(R.id.questionTextfrag);
             button1 = (Button) fragView.findViewById(R.id.button1frag);
             button2 = (Button) fragView.findViewById(R.id.button2frag);
@@ -247,6 +287,14 @@ public class votingFragment extends Fragment {
                             }
 
                             public void onFinish() {
+                                View buttonview = getActivity().findViewById(R.id.fab5);
+
+
+                                getActivity().onBackPressed();
+
+
+                                buttonview.setVisibility(View.GONE);
+
 
                                 //  CLOSE FRAGMENT
 
@@ -269,8 +317,6 @@ public class votingFragment extends Fragment {
             });
 
 
-
-
             voteCountReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -289,85 +335,90 @@ public class votingFragment extends Fragment {
             });
 
 
+            ///answer1
 
-        ///answer1
+            button1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                    vote1Count= vote1Count+1;
+                    voteCountReference.child("vote1").setValue(vote1Count);
 
-                vote1Count= vote1Count+1;
-                voteCountReference.child("vote1").setValue(vote1Count);
+                    Log.e("is answered in vote 1",String.valueOf(answered) );
 
-                SharedPreferences.Editor editor = preferences.edit();
+                    SharedPreferences.Editor editor = preferences.edit();
+
+                    editor.putBoolean("answered yes no",true);
+
+                    editor.commit();
+
+                    //answered = true;
+
+                    Toast.makeText(getActivity(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
+
+                    button1.setVisibility(View.GONE);
+                    button2.setVisibility(View.GONE);
+
+                    pb1.setVisibility(View.VISIBLE); // option 1 bar display
+                    pb2.setVisibility(View.VISIBLE);
+
+                    vote1text.setVisibility(View.VISIBLE); //option 1 display
+                    vote2text.setVisibility(View.VISIBLE);
+
+                    vote1percenttext.setVisibility(View.VISIBLE); //option 1 percent display
+                    vote2percenttext.setVisibility(View.VISIBLE);
+
+                    openResults();
+
+
+                    }
+
+            });
+
+            /// answer2
+
+            button2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    vote2Count= vote2Count+1;
+                    voteCountReference.child("vote2").setValue(vote2Count);
+
+                    Log.e("is answered in vote 2",String.valueOf(answered) );
+
+
+                   SharedPreferences.Editor editor = preferences.edit();
+
+                    editor.putBoolean("answered yes no",true);
+                    editor.commit();
 
 
 
-                editor.putBoolean("isAnswered",true);
+                    //answered = true;
 
-                editor.commit();
+                    Toast.makeText(getActivity(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
 
-                //answered = true;
+                    button1.setVisibility(View.GONE);
+                    button2.setVisibility(View.GONE);
 
-                Toast.makeText(getActivity(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
+                    pb1.setVisibility(View.VISIBLE); // option 1 bar display
+                    pb2.setVisibility(View.VISIBLE);
 
-                button1.setVisibility(View.GONE);
-                button2.setVisibility(View.GONE);
+                    vote1text.setVisibility(View.VISIBLE); //option 1 display
+                    vote2text.setVisibility(View.VISIBLE);
 
-                pb1.setVisibility(View.VISIBLE); // option 1 bar display
-                pb2.setVisibility(View.VISIBLE);
+                    vote1percenttext.setVisibility(View.VISIBLE); //option 1 percent display
+                    vote2percenttext.setVisibility(View.VISIBLE);
 
-                vote1text.setVisibility(View.VISIBLE); //option 1 display
-                vote2text.setVisibility(View.VISIBLE);
+                    openResults();
 
-                vote1percenttext.setVisibility(View.VISIBLE); //option 1 percent display
-                vote2percenttext.setVisibility(View.VISIBLE);
-
-                openResults();
 
 
                 }
 
-        });
 
-        /// answer2
-
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                vote2Count= vote2Count+1;
-                voteCountReference.child("vote2").setValue(vote2Count);
-
-               SharedPreferences.Editor editor = preferences.edit();
-
-                editor.putBoolean("isAnswered",true);
-                editor.commit();
-
-                //answered = true;
-
-                Toast.makeText(getActivity(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
-
-                button1.setVisibility(View.GONE);
-                button2.setVisibility(View.GONE);
-
-                pb1.setVisibility(View.VISIBLE); // option 1 bar display
-                pb2.setVisibility(View.VISIBLE);
-
-                vote1text.setVisibility(View.VISIBLE); //option 1 display
-                vote2text.setVisibility(View.VISIBLE);
-
-                vote1percenttext.setVisibility(View.VISIBLE); //option 1 percent display
-                vote2percenttext.setVisibility(View.VISIBLE);
-
-                openResults();
-
-
-
-            }
-
-
-        });
+            });
+        }
 
         //////OnCreateView
 

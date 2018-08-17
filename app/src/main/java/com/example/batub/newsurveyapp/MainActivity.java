@@ -162,11 +162,20 @@ public class MainActivity extends AppCompatActivity {
                 refLocation.child("minute_range").setValue(minuteRange);
                 refLocation.child("enter_time").setValue(enterTime);
 
-                SharedPreferences mypref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+               SharedPreferences mypref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = mypref.edit();
 
+               /* SharedPreferences mypref = getApplicationContext().getSharedPreferences("mypref",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = mypref.edit();*/
+
                 editor.putBoolean("isAnswered",false);
+                editor.putBoolean("answered yes no",false);
+
                 editor.commit();
+
+                boolean isansweredInMain = mypref.getBoolean("isanswered",false);
+
+                Log.e("isansweredInMain",String.valueOf(isansweredInMain));
 
 
                 editText.getText().clear();
