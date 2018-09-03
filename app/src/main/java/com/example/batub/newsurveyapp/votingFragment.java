@@ -76,6 +76,8 @@ public class votingFragment extends Fragment {
 
     public void openResults() {
 
+
+
         button1.setVisibility(View.GONE);
         button2.setVisibility(View.GONE);
 
@@ -151,8 +153,12 @@ public class votingFragment extends Fragment {
                 String option1text = dataSnapshot.child("cevap1").getValue(String.class);
                 String option2text = dataSnapshot.child("cevap2").getValue(String.class);
 
+                String qtext = dataSnapshot.child("soru").getValue(String.class);
+
                 vote1text.setText(option1text);
                 vote2text.setText(option2text);
+
+                questionText.setText(qtext);
 
             }
 
@@ -289,16 +295,12 @@ public class votingFragment extends Fragment {
                             public void onFinish() {
                                 View buttonview = getActivity().findViewById(R.id.fab5);
 
-
                                 getActivity().onBackPressed();
-
 
                                 buttonview.setVisibility(View.GONE);
 
 
                                 //  CLOSE FRAGMENT
-
-
 
 
                             }
@@ -368,6 +370,8 @@ public class votingFragment extends Fragment {
                     vote1percenttext.setVisibility(View.VISIBLE); //option 1 percent display
                     vote2percenttext.setVisibility(View.VISIBLE);
 
+
+
                     openResults();
 
 
@@ -409,6 +413,9 @@ public class votingFragment extends Fragment {
 
                     vote1percenttext.setVisibility(View.VISIBLE); //option 1 percent display
                     vote2percenttext.setVisibility(View.VISIBLE);
+
+
+
 
                     openResults();
 

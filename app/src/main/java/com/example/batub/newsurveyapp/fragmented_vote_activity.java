@@ -30,6 +30,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -187,7 +188,7 @@ public class fragmented_vote_activity extends AppCompatActivity {
                 manager = getSupportFragmentManager();
 
                 transaction = manager.beginTransaction();
-                transaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_right);
+                transaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_right,R.anim.slide_right,R.anim.slide_right);
 
                 transaction.add(R.id.container1, fragment,"myFrag");
                 transaction.addToBackStack(null);
@@ -233,6 +234,7 @@ public class fragmented_vote_activity extends AppCompatActivity {
         player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
 
         simpleExoPlayerView.setPlayer(player);
+        simpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL); //fill video full screen
 
         player.setPlayWhenReady(shouldAutoPlay);
 /*        MediaSource mediaSource = new HlsMediaSource(Uri.parse("https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"),

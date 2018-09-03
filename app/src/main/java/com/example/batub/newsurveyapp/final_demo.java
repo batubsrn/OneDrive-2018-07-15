@@ -1,6 +1,8 @@
 package com.example.batub.newsurveyapp;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.CountDownTimer;
@@ -9,6 +11,8 @@ import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +32,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -60,9 +65,6 @@ public class final_demo extends Activity {
     //////////////////////////////////////////
 
     FloatingActionButton voteButton;
-
-
-
 
 
     FirebaseDatabase voteDatabase;
@@ -224,7 +226,6 @@ public class final_demo extends Activity {
                             onTime = true;
                             Log.e("ontime","true");
 
-
                             voteButton.setVisibility(View.VISIBLE);
 
                         } else if ( votingRangeMills < timeDiff ){
@@ -243,8 +244,10 @@ public class final_demo extends Activity {
             }
         }) ;
 
+
         ///////////////////////// VOTING ALERT DIALOG
         timerFirstTime =true;
+
 
             voteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -418,6 +421,7 @@ public class final_demo extends Activity {
         player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
 
         simpleExoPlayerView.setPlayer(player);
+        simpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
 
         player.setPlayWhenReady(shouldAutoPlay);
 /*        MediaSource mediaSource = new HlsMediaSource(Uri.parse("https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"),

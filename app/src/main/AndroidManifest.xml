@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.batub.newsurveyapp">
 
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+
     <permission
         android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
         android:protectionLevel="signature" />
@@ -10,12 +13,16 @@
         android:allowBackup="true"
         android:icon="@mipmap/tv_icon_launcher"
         android:label="TV+ survey POC"
+
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
 
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity" >
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
