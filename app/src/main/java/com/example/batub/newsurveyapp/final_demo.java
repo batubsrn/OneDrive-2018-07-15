@@ -44,7 +44,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
-import static com.example.batub.newsurveyapp.database_page.d3;
+
 
 
 public class final_demo extends Activity {
@@ -61,7 +61,7 @@ public class final_demo extends Activity {
 
     FloatingActionButton voteButton;
 
-    TextView boolTestView;
+
 
 
 
@@ -134,7 +134,7 @@ public class final_demo extends Activity {
                 int int5 = d5.intValue(); // test & backup
                 int int6 = d6.intValue(); // test & backup
 
-                System.out.println(d3);
+                System.out.println(d3); //Track variables
                 System.out.println(d4);
                 System.out.println(d5);
                 System.out.println(d6);
@@ -142,8 +142,8 @@ public class final_demo extends Activity {
                 percent1Progress.setProgress(int5);
                 percent2Progress.setProgress(int6);
 
-                vote1BarPercent.setText("%" + Double.toString(d5)  );    // percentage display
-                vote2BarPercent.setText("%" + Double.toString(d6)  );    //     "         "
+                vote1BarPercent.setText("%"+String.format("%.2f", d5)  );    // percentage display
+                vote2BarPercent.setText("%"+String.format("%.2f", d6)  );    //     "         "
 
             }
 
@@ -177,7 +177,7 @@ public class final_demo extends Activity {
         dialog2.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
         dialog2.show();
 
-        dialog2.getWindow().setLayout( 800,480);
+        dialog2.getWindow().setLayout( 2000,1000);
 
 
 
@@ -190,7 +190,6 @@ public class final_demo extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.final_demo_layout);
 
-        boolTestView= (TextView) findViewById(R.id.booltesttext) ;
         voteButton = (FloatingActionButton) findViewById(R.id.fab5);
 
 
@@ -225,13 +224,13 @@ public class final_demo extends Activity {
                             onTime = true;
                             Log.e("ontime","true");
 
-                            boolTestView.setVisibility(View.VISIBLE);
+
                             voteButton.setVisibility(View.VISIBLE);
 
                         } else if ( votingRangeMills < timeDiff ){
                             Log.e("ontime","false");
                             onTime=false;
-                            boolTestView.setVisibility(View.GONE);
+
                             voteButton.setVisibility(View.GONE);
                         }
 
@@ -306,7 +305,7 @@ public class final_demo extends Activity {
                                             dialog.dismiss();
                                             dialog2.dismiss();
                                             voteButton.setVisibility(View.GONE);
-                                            boolTestView.setVisibility(View.GONE);
+
 
                                         }
                                     }.start();
@@ -331,7 +330,7 @@ public class final_demo extends Activity {
                         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
                         dialog.show();
 
-                        dialog.getWindow().setLayout( 800,480);
+                        dialog.getWindow().setLayout( 2000,1000);
 
                         voteCountReference= voteDatabase.getReference().child("votecount").child("1");
 

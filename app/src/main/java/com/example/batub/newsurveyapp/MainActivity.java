@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         final DatabaseReference myref2 = myDatabase.getReference().child("surveys");
 
-        finale_button= (Button) findViewById(R.id.finale_construct);
+
 
 
         button1= (Button) findViewById(R.id.button1); //add button
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         editMinuteText =(EditText) findViewById(R.id.editMinuteText);
 
         textView = (TextView) findViewById(R.id.readdataview);
-       final TextView textView7 = (TextView) findViewById(R.id.denemeview);
+
 
 
         button1.setOnClickListener(new View.OnClickListener() {
@@ -219,17 +219,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(demoIntent);
     }
 
-    public void goToFinale(View view){
 
-        Intent finalIntent = new Intent(this,final_activity.class);
 
-        startActivity(finalIntent);
 
-    }
-
-    public  void fragmentDemo(View view){
-         Intent fragintent =new Intent(this,fragmentTest.class);
-         startActivity(fragintent);
-    }
 
 }

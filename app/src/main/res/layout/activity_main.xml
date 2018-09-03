@@ -34,10 +34,9 @@
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/editText2"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="26dp"
-        android:layout_marginTop="115dp"
+        android:layout_marginEnd="27dp"
         android:text="add"
         tools:layout_editor_absoluteX="84dp"
         tools:layout_editor_absoluteY="84dp" />
@@ -47,12 +46,11 @@
         android:layout_width="wrap_content"
 
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
 
-        android:layout_marginBottom="105dp"
+        android:layout_alignStart="@+id/button1"
+        android:layout_below="@+id/readdataview"
         android:onClick="goToDisplayPage"
-        android:text="display Page" />
+        android:text="frag demo" />
 
     <EditText
         android:id="@+id/editText2"
@@ -78,13 +76,6 @@
         android:inputType="textPersonName" />
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="denemetexti"
-        android:id="@+id/denemeview"
-        />
-
     <EditText
         android:id="@+id/editMinuteText"
         android:layout_width="182dp"
@@ -97,24 +88,13 @@
         android:inputType="number" />
 
     <Button
-        android:id="@+id/finale_construct"
-        android:layout_width="193dp"
-        android:layout_height="42dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/editText2"
-        android:layout_marginBottom="185dp"
-        android:onClick="fragmentDemo"
-        android:text="fragment test" />
-
-    <Button
         android:id="@+id/final_demo_button"
-        android:layout_width="68dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/editText2"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="-88dp"
+        android:layout_above="@+id/editMinuteText"
+        android:layout_alignStart="@+id/button1"
         android:onClick="gotodemo"
-        android:text="demo" />
+        android:text="dialog demo" />
 
 
 </RelativeLayout>
