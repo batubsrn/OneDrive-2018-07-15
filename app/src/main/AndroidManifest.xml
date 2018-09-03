@@ -37,6 +37,7 @@
 
         <activity
             android:name=".fragmented_vote_activity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="landscape"
 
             />
