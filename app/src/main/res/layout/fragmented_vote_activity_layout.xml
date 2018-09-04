@@ -36,6 +36,7 @@
         android:layout_width="295dp"
 
 
+
         android:layout_height="203dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true">
