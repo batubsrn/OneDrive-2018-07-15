@@ -77,6 +77,8 @@ public class votingFragment extends Fragment {
     public void openResults() {
 
 
+        TextView timerText2 = (TextView) fragView.findViewById(R.id.timerText);
+        timerText2.setVisibility(View.GONE);
 
         button1.setVisibility(View.GONE);
         button2.setVisibility(View.GONE);
@@ -434,6 +436,8 @@ public class votingFragment extends Fragment {
         return  fragView;
 
     }
+
+
 
 
 }

@@ -202,23 +202,32 @@ public class fragmented_vote_activity extends AppCompatActivity {
 
 
         View simpleExoPlayerView=findViewById(R.id.player_view);
-        simpleExoPlayerView.setOnTouchListener(new View.OnTouchListener() {
+
+        simpleExoPlayerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("on touch","video player touched?");
+
+            }
+        });
+
+
+        /*simpleExoPlayerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                Log.e("on touch","video player touched?");
 
 
                 return false;
             }
         });
-
+*/
 
 
 
 
 
     }
+
 
 
     private void initializePlayer() {

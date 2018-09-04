@@ -193,12 +193,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-          // Query myquery= refLocation.
 
 
 
             Toast.makeText(getApplicationContext(),
-                    "onresume", Toast.LENGTH_LONG).show();
+                    "onresume", Toast.LENGTH_SHORT).show();
 
             super.onResume();
         }
@@ -217,8 +216,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(demoIntent);
     }
 
+    @Override
+    protected void onStop() {
 
+        Toast.makeText(getApplicationContext(),
+                "onstop", Toast.LENGTH_SHORT).show();
 
-
-
+        super.onStop();
+    }
 }
