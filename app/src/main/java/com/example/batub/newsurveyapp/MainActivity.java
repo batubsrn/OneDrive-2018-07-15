@@ -205,6 +205,8 @@ public class MainActivity extends AppCompatActivity {
     public void goToDisplayPage(View view){
 
         Intent intent = new Intent(this,fragmented_vote_activity.class);
+        Toast.makeText(getApplicationContext(),
+                "video started", Toast.LENGTH_SHORT).show();
         startActivity(intent);
 
 
