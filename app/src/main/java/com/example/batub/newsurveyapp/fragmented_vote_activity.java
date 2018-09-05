@@ -100,7 +100,7 @@ public class fragmented_vote_activity extends AppCompatActivity {
     FragmentTransaction transaction;
     FragmentManager manager;
 
-    FrameLayout myContainer;
+    FrameLayout myContainer , container2;
 
 
     @Override
@@ -173,9 +173,14 @@ public class fragmented_vote_activity extends AppCompatActivity {
 
 
 
+
         myContainer =findViewById(R.id.container1);
 
+        container2 = findViewById(R.id.container2);
+        container2.setVisibility(View.GONE);
+
         fragment = new votingFragment();
+
 
         voteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,6 +198,8 @@ public class fragmented_vote_activity extends AppCompatActivity {
                 transaction.add(R.id.container1, fragment,"myFrag");
                 transaction.addToBackStack(null);
                 transaction.commit();
+
+                container2.setVisibility(View.VISIBLE);
 
 
             }
@@ -226,8 +233,15 @@ public class fragmented_vote_activity extends AppCompatActivity {
 
 
 
+
     }
 
+    public void closeFragment(View view){
+        container2.setVisibility(View.GONE);
+
+        onBackPressed();
+
+    }
 
 
     private void initializePlayer() {
