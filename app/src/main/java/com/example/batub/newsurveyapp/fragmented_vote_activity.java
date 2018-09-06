@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -55,14 +57,10 @@ public class fragmented_vote_activity extends AppCompatActivity {
     private DefaultTrackSelector trackSelector;
     private boolean shouldAutoPlay;
     private BandwidthMeter bandwidthMeter;
-
     /////////////////////////////////////////////////////////////
-
     ImageButton closeButton2 ;
 
     FloatingActionButton voteButton;
-
-   // TextView boolTestView;
 
     TextView questionView , timeText ;
     Button vote1Button, vote2Button;
@@ -91,17 +89,12 @@ public class fragmented_vote_activity extends AppCompatActivity {
     SharedPreferences preferences;
 
     AlertDialog dialog ,dialog2 ;
-
-
     //////////////////////////////////////////////////////////7
-
     Fragment fragment;
-
     FragmentTransaction transaction;
     FragmentManager manager;
 
     FrameLayout myContainer , container2;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,15 +110,7 @@ public class fragmented_vote_activity extends AppCompatActivity {
         Timeline.Window window = new Timeline.Window();
         ImageView ivHideControllerButton = (ImageView) findViewById(R.id.exo_controller);
 
-
-        // boolTestView= (TextView) findViewById(R.id.booltesttext) ;
         voteButton = (FloatingActionButton) findViewById(R.id.fab5);
-
-        /*closeButton2 = (ImageButton) findViewById(R.id.imagebuttonclosefrag);
-
-        closeButton2.setVisibility(View.GONE);*/
-
-
 
         ////////////////// DATABASE REFERENCES
 
@@ -160,19 +145,12 @@ public class fragmented_vote_activity extends AppCompatActivity {
                     // boolTestView.setVisibility(View.GONE);
                     voteButton.setVisibility(View.GONE);
                 }
-
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         }) ;
-
-
-
-
 
         myContainer =findViewById(R.id.container1);
 
@@ -181,32 +159,27 @@ public class fragmented_vote_activity extends AppCompatActivity {
 
         fragment = new votingFragment();
 
-
         voteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                if(onTime)
+                {
+                    voteButton.setVisibility(View.GONE);
 
+                    manager = getSupportFragmentManager();
 
-                voteButton.setVisibility(View.GONE);
+                    transaction = manager.beginTransaction();
+                    transaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_right,R.anim.slide_right,R.anim.slide_right);
 
-                manager = getSupportFragmentManager();
+                    transaction.add(R.id.container1, fragment,"myFrag");
+                    transaction.addToBackStack(null);
+                    transaction.commit();
 
-                transaction = manager.beginTransaction();
-                transaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_right,R.anim.slide_right,R.anim.slide_right);
-
-                transaction.add(R.id.container1, fragment,"myFrag");
-                transaction.addToBackStack(null);
-                transaction.commit();
-
-                container2.setVisibility(View.VISIBLE);
-
-
+                    container2.setVisibility(View.VISIBLE);
+                }
             }
         });
-
-
-
 
         View simpleExoPlayerView=findViewById(R.id.player_view);
 
@@ -218,31 +191,34 @@ public class fragmented_vote_activity extends AppCompatActivity {
             }
         });
 
-
-        /*simpleExoPlayerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-
-
-                return false;
-            }
-        });
-*/
-
-
-
-
-
-
     }
 
     public void closeFragment(View view){
-        container2.setVisibility(View.GONE);
 
+
+        View containerview2 = findViewById(R.id.container2);
+        containerview2.setVisibility(View.GONE);
         onBackPressed();
+      //  voteButton.setVisibility(View.VISIBLE);
 
+        /*View containerview = findViewById(R.id.container1);
+        FragmentTransaction transaction2=manager.beginTransaction();
+        Animation animation = AnimationUtils.loadAnimation(this,R.anim.slide_right);
+        containerview.startAnimation(animation);
+        containerview.setVisibility(View.GONE);
+        transaction2.remove(fragment);
+        manager.popBackStack();
+        transaction2.commit();
+        voteButton.setVisibility(View.VISIBLE);
+            //////////////////////////////////////
+        voteButton.setVisibility(View.GONE);
+        manager = getSupportFragmentManager();
+        transaction = manager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_right,R.anim.slide_right,R.anim.slide_right);
+        transaction.remove(fragment);
+        manager.popBackStack();
+        container2.setVisibility(View.GONE);    */
     }
-
 
     private void initializePlayer() {
 
@@ -320,7 +296,14 @@ public class fragmented_vote_activity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         voteButton.setVisibility(View.VISIBLE);
+
+        Log.e("backpressed","OnBackPressed");
     }
 }
 
 
+/*if (getFragmentManager().getBackStackEntryCount() == 0) {
+            this.finish();
+        } else {
+            getFragmentManager().popBackStack();
+        }*/

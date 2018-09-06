@@ -16,7 +16,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,13 +34,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class votingFragment extends Fragment {
 
     View fragView;
-
 
     FirebaseDatabase voteDatabase;
     DatabaseReference questionReference , voteCountReference, progressBarReference ;
@@ -45,9 +44,6 @@ public class votingFragment extends Fragment {
     String question, option1,option2 ;
 
     Long vote1Count,vote2Count ;
-
-
-    // ImageButton closeButton;
 
     ProgressBar pb1 ,pb2 ;
     TextView questionText, vote1percenttext,vote2percenttext;
@@ -62,18 +58,18 @@ public class votingFragment extends Fragment {
 
     SharedPreferences preferences;
 
+    FrameLayout fragContainer;
+
     static Double d3;
     static Double d4;
 
     long timeLeft;
-
     ////////////////////////////////////////////////////
     public votingFragment() {
         // Required empty public constructor
     }
 
     /////////////////////////////////////////////////////////
-
     public void openResults() {
 
 
@@ -113,9 +109,6 @@ public class votingFragment extends Fragment {
 
                 String vote1CountStr = String.valueOf(vote1Count);
                 String vote2CountStr=String.valueOf(vote2Count);
-
-                // vote1percent.setText(vote1CountStr);
-                // vote2percent.setText( vote2CountStr );
 
                 d3=vote1Count.doubleValue();        //  vote 1 real count convert to double for decimal
                 d4=vote2Count.doubleValue();         // vote 2 real count    "      "   "   "       "
@@ -169,22 +162,12 @@ public class votingFragment extends Fragment {
 
             }
         });
-
-
-
-
     }
-
-
     ////////////////////////////////////////////////////////
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         // Inflate the layout for this fragment
-
 
          fragView = inflater.inflate(R.layout.fragment_voting, container, false);
 
@@ -214,36 +197,20 @@ public class votingFragment extends Fragment {
         vote2text.setVisibility(View.GONE);
 
         ////////////////// DATABASE REFERENCES
-
         voteDatabase=FirebaseDatabase.getInstance();
         questionReference = voteDatabase.getReference().child("deneme");
         voteCountReference= voteDatabase.getReference().child("votecount").child("1");
-
-////////////////////////////////////////////
-/*
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Fragment f2 = null;
-                FragmentManager manager2 = getFragmentManager();
-                FragmentTransaction transaction2 = manager2.beginTransaction();
-
-                transaction2.replace(R.id.container1,f2);
-                transaction2.commit();
+        /////////////////////////////////////
 
 
-            }
-        });*/
-
-
-        ////////////////////
-        timerFirstTime = true;
 
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext() );
 
-
         answered = preferences.getBoolean("answered yes no",false);
+        Log.e("timerfirsttime", String.valueOf(timerFirstTime));
+
+        timerFirstTime = preferences.getBoolean("first time timer",true);
+        Log.e("timerfirsttime", String.valueOf(timerFirstTime));
 
        /* preferences = getActivity().getSharedPreferences("mypref", Context.MODE_PRIVATE);
 
@@ -252,7 +219,6 @@ public class votingFragment extends Fragment {
         Log.e(" answered",String.valueOf(answered) );
 
         /// Get questions and display them
-
 
         if(answered){
             openResults();
@@ -287,40 +253,56 @@ public class votingFragment extends Fragment {
 
                     timeLeft = countdownMills;
 
+
+                    timerFirstTime = preferences.getBoolean("first time timer",true);
+                    Log.e("timerfirsttime", String.valueOf(timerFirstTime));
+
                     if (timerFirstTime) {
+
                         new CountDownTimer(timeLeft, 1000) {
                             public void onTick(long millisUntilFinished) {
                                 timerText.setText(String.valueOf(timeLeft / 1000));
                                 timeLeft = timeLeft - 1000;
                             }
-
                             public void onFinish() {
-                                View buttonview = getActivity().findViewById(R.id.fab5);
 
-                                getActivity().onBackPressed();
+                                View containerview = getActivity().findViewById(R.id.container1);
 
-                                buttonview.setVisibility(View.GONE);
+                               // Animation animation = AnimationUtils.loadAnimation(getActivity(),R.anim.slide_right);
+
+                                containerview.setVisibility(View.GONE);
+
 
 
                                 //  CLOSE FRAGMENT
+                                /*
 
+
+                                View containerview2 = getActivity().findViewById(R.id.container2);
+                                 containerview2.setVisibility(View.GONE);
+
+
+                                containerview.startAnimation(animation);
+
+                                getActivity().onBackPressed();
+                                     */
+
+                              //  ( (fragmented_vote_activity)getActivity() ).closeFragment(fragView);
 
                             }
                         }.start();
 
-                        timerFirstTime = false;
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putBoolean("first time timer",false);
+                        editor.commit();
                     }
-
-
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
             });
-
-
+            //GET VOTE COUNTS FROM FIREBASE
             voteCountReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -330,17 +312,13 @@ public class votingFragment extends Fragment {
                     Log.e("vote1", String.valueOf(vote1Count) );
                     Log.e("vote2", String.valueOf(vote2Count) );
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
 
                 }
             });
-
-
             ///answer1
-
             button1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -351,11 +329,8 @@ public class votingFragment extends Fragment {
                     Log.e("is answered in vote 1",String.valueOf(answered) );
 
                     SharedPreferences.Editor editor = preferences.edit();
-
                     editor.putBoolean("answered yes no",true);
-
                     editor.commit();
-
                     //answered = true;
 
                     Toast.makeText(getActivity(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
@@ -372,17 +347,11 @@ public class votingFragment extends Fragment {
                     vote1percenttext.setVisibility(View.VISIBLE); //option 1 percent display
                     vote2percenttext.setVisibility(View.VISIBLE);
 
-
-
                     openResults();
-
-
                     }
-
             });
 
             /// answer2
-
             button2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -394,13 +363,9 @@ public class votingFragment extends Fragment {
 
 
                    SharedPreferences.Editor editor = preferences.edit();
-
-                    editor.putBoolean("answered yes no",true);
-                    editor.commit();
-
-
-
-                    //answered = true;
+                   editor.putBoolean("answered yes no",true);
+                   editor.commit();
+                   //answered = true;
 
                     Toast.makeText(getActivity(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
 
@@ -416,29 +381,11 @@ public class votingFragment extends Fragment {
                     vote1percenttext.setVisibility(View.VISIBLE); //option 1 percent display
                     vote2percenttext.setVisibility(View.VISIBLE);
 
-
-
-
                     openResults();
-
-
-
                 }
-
-
             });
         }
-
-        //////OnCreateView
-
-
-
         return  fragView;
-
     }
-
-
-
-
 }
 
