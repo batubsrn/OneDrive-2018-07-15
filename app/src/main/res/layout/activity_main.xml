@@ -51,7 +51,7 @@
         android:layout_alignStart="@+id/button1"
         android:layout_below="@+id/readdataview"
         android:onClick="goToDisplayPage"
-        android:text="frag demo" />
+        android:text="FRAG DEMO" />
 
     <EditText
         android:id="@+id/editText2"
@@ -95,7 +95,7 @@
         android:layout_above="@+id/editMinuteText"
         android:layout_alignStart="@+id/button1"
         android:onClick="gotodemo"
-        android:text="dialog demo" />
+        android:text="DIALOG DEMO" />
 
 
 </RelativeLayout>

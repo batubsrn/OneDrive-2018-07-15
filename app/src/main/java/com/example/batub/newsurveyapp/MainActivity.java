@@ -42,40 +42,24 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TextView textView;
 
-   // public Survey passTheSurveyObject;
-
-    //String incrementString;
-
     private FirebaseDatabase myDatabase;
     private DatabaseReference myDatabaseRef, refLocation;
 
-    Button finale_button;
-
     Long enterTime ;
     Long minuteRange;
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         FirebaseApp.initializeApp(this);
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         myDatabase= FirebaseDatabase.getInstance();
         myDatabaseRef = myDatabase.getReference();
 
-
         final DatabaseReference myref2 = myDatabase.getReference().child("surveys");
-
-
-
 
         button1= (Button) findViewById(R.id.button1); //add button
         button2= (Button) findViewById(R.id.button2); //to display page button
@@ -86,8 +70,6 @@ public class MainActivity extends AppCompatActivity {
         editMinuteText =(EditText) findViewById(R.id.editMinuteText);
 
         textView = (TextView) findViewById(R.id.readdataview);
-
-
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,59 +83,9 @@ public class MainActivity extends AppCompatActivity {
 
                 enterTime = Calendar.getInstance().getTimeInMillis();
 
-
-                //  refLocation=myDatabaseRef;
-
                 refLocation=myDatabase.getReference().child("deneme");
 
-
-                /*
-                Query query=refLocation.orderByKey(); // QUERY
-
-                ValueEventListener valueEventListener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        for (DataSnapshot ds: dataSnapshot.getChildren()){
-                            String incNumber=ds.getKey();
-                            increment =Integer.parseInt(incNumber);
-
-                            Log.d("incnumber",incNumber);
-
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                };
-
-                query.addListenerForSingleValueEvent(valueEventListener);
-
-
-                incrementString= Integer.toString(increment+1);
-
-
-
-                Survey surveyObject= new Survey(value,value2,value3,increment+1);
-
-                refLocation.child(incrementString).setValue(surveyObject);
-
-               // refLocation.child(incrementString).child("id").setValue(incrementString);
-
-
-
-                textView7.setText(incrementString);
-
-              //  passTheSurveyObject.changeAttributeSurvey(surveyObject);
-
-
-                */
-
-                    refLocation.child("soru").setValue(value);
+                refLocation.child("soru").setValue(value);
                 refLocation.child("cevap1").setValue(value2);
                 refLocation.child("cevap2").setValue(value3);
 
@@ -163,11 +95,9 @@ public class MainActivity extends AppCompatActivity {
                SharedPreferences mypref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = mypref.edit();
 
-               /* SharedPreferences mypref = getApplicationContext().getSharedPreferences("mypref",Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = mypref.edit();*/
-
                 editor.putBoolean("isAnswered",false);
                 editor.putBoolean("answered yes no",false);
+                editor.putBoolean("first time timer",true);
 
                 editor.commit();
 
@@ -175,27 +105,19 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.e("isansweredInMain",String.valueOf(isansweredInMain));
 
-
                 editText.getText().clear();
                 editText2.getText().clear();
                 editText3.getText().clear();
                 editMinuteText.getText().clear();
 
-
                 Toast.makeText(getApplicationContext(),
                         "added to firebase", Toast.LENGTH_LONG).show();
-
             }
 
         });
-
     }
-
     @Override
     protected void onResume() {
-
-
-
             Toast.makeText(getApplicationContext(),
                     "onresume", Toast.LENGTH_SHORT).show();
 
@@ -203,27 +125,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
     public void goToDisplayPage(View view){
-
         Intent intent = new Intent(this,fragmented_vote_activity.class);
         Toast.makeText(getApplicationContext(),
                 "video started", Toast.LENGTH_SHORT).show();
         startActivity(intent);
-
-
     }
 
     public void gotodemo(View view){
         Intent demoIntent = new Intent(this,final_demo.class);
-
         startActivity(demoIntent);
     }
-
     @Override
     protected void onStop() {
-
         Toast.makeText(getApplicationContext(),
                 "onstop", Toast.LENGTH_SHORT).show();
-
         super.onStop();
     }
 }
