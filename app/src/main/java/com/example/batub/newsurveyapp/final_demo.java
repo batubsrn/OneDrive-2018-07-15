@@ -180,12 +180,7 @@ public class final_demo extends Activity {
         dialog2.show();
 
         dialog2.getWindow().setLayout( 2000,1000);
-
-
-
     }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -193,7 +188,6 @@ public class final_demo extends Activity {
         setContentView(R.layout.final_demo_layout);
 
         voteButton = (FloatingActionButton) findViewById(R.id.fab5);
-
 
         /////////////////// EXOPLAYER
         shouldAutoPlay = true;
@@ -203,7 +197,6 @@ public class final_demo extends Activity {
         ImageView ivHideControllerButton = (ImageView) findViewById(R.id.exo_controller);
 
         ////////////////// DATABASE REFERENCES
-
         voteDatabase=FirebaseDatabase.getInstance();
         questionReference = voteDatabase.getReference().child("deneme");
         voteCountReference = voteDatabase.getReference().child("votecount");
@@ -212,7 +205,6 @@ public class final_demo extends Activity {
         questionReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 Long enterTime = dataSnapshot.child("enter_time").getValue(Long.class);
                 Long votingRangeMin = dataSnapshot.child("minute_range").getValue(Long.class);
 
@@ -237,17 +229,14 @@ public class final_demo extends Activity {
 
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         }) ;
 
-
         ///////////////////////// VOTING ALERT DIALOG
         timerFirstTime =true;
-
 
             voteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -257,14 +246,11 @@ public class final_demo extends Activity {
                     preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     answered = preferences.getBoolean("isAnswered",false);
 
-
-
                     if(answered){
                         openResultDialog();
                     }
 
                     /// Get questions and display them
-
                     if (answered==false){
                         final AlertDialog.Builder myBuilder = new AlertDialog.Builder(final_demo.this);
                         View myView = getLayoutInflater().inflate(R.layout.vote_dialog,null);
@@ -278,9 +264,9 @@ public class final_demo extends Activity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                 question = dataSnapshot.child("soru").getValue(String.class);
+                                question = dataSnapshot.child("soru").getValue(String.class);
                                 option1 = dataSnapshot.child("cevap1").getValue(String.class);
-                                 option2 = dataSnapshot.child("cevap2").getValue(String.class);
+                                option2 = dataSnapshot.child("cevap2").getValue(String.class);
 
                                  Long entryTime = dataSnapshot.child("enter_time").getValue(Long.class);
                                  Long minRange = dataSnapshot.child("minute_range").getValue(Long.class);
@@ -288,11 +274,11 @@ public class final_demo extends Activity {
                                  Long time = Calendar.getInstance().getTimeInMillis();
                                  final long countdownMills = ( minRange *60000 ) -   (time-entryTime) ;
 
-                               Log.e("question",question);
+                                Log.e("question",question);
                                 Log.e("option1",option1);
                                 Log.e("option2",option2);
 
-                               questionView.setText(question);
+                                questionView.setText(question);
                                 vote1Button.setText(option1);
                                 vote2Button.setText(option2);
 
@@ -308,35 +294,25 @@ public class final_demo extends Activity {
                                             dialog.dismiss();
                                             dialog2.dismiss();
                                             voteButton.setVisibility(View.GONE);
-
-
                                         }
                                     }.start();
 
                                     timerFirstTime =false;
                                 }
-
-
                             }
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
 
                             }
                         });
 
-
-
                         myBuilder.setView(myView);
-                         dialog =myBuilder.create();
-
+                        dialog =myBuilder.create();
                         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
                         dialog.show();
-
                         dialog.getWindow().setLayout( 2000,1000);
 
                         voteCountReference= voteDatabase.getReference().child("votecount").child("1");
-
                         voteCountReference.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -346,10 +322,8 @@ public class final_demo extends Activity {
                                 Log.e("vote1", String.valueOf(vote1Count) );
                                 Log.e("vote2", String.valueOf(vote2Count) );
                             }
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
-
 
                             }
                         });
@@ -358,15 +332,12 @@ public class final_demo extends Activity {
                             @Override
                             public void onClick(View view) {
 
-
                                 vote1Count= vote1Count+1;
                                 voteCountReference.child("vote1").setValue(vote1Count);
 
                                 SharedPreferences.Editor editor = preferences.edit();
-
                                 editor.putBoolean("isAnswered",true);
                                 editor.commit();
-
                                 //answered = true;
 
                                 Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
@@ -384,28 +355,19 @@ public class final_demo extends Activity {
                                 voteCountReference.child("vote2").setValue(vote2Count);
 
                                 SharedPreferences.Editor editor = preferences.edit();
-
                                 editor.putBoolean("isAnswered",true);
                                 editor.commit();
-
-
                                 //answered = true;
 
                                 Toast.makeText(getApplicationContext(),"Answer submitted successfully",Toast.LENGTH_SHORT).show();
 
                                 dialog.dismiss();
                                 openResultDialog();
-
                             }
                         });
                     }
-
-
                 }
             });
-
-            ///////////////////////////////////////////
-
     }
 
     private void initializePlayer() {
@@ -424,17 +386,11 @@ public class final_demo extends Activity {
         simpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
 
         player.setPlayWhenReady(shouldAutoPlay);
-/*        MediaSource mediaSource = new HlsMediaSource(Uri.parse("https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"),
-                mediaDataSourceFactory, mainHandler, null);*/
-
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 
         MediaSource mediaSource = new ExtractorMediaSource(Uri.parse("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"),
                 mediaDataSourceFactory, extractorsFactory, null, null);
-
         player.prepare(mediaSource);
-
-
     }
 
     private void releasePlayer() {
@@ -445,14 +401,12 @@ public class final_demo extends Activity {
             trackSelector = null;
         }
     }
-
     @Override
     public void onStart() {
         super.onStart();
         if (Util.SDK_INT > 23) {
             initializePlayer();
         }
-
     }
 
     @Override
@@ -478,6 +432,4 @@ public class final_demo extends Activity {
             releasePlayer();
         }
     }
-
-
 }

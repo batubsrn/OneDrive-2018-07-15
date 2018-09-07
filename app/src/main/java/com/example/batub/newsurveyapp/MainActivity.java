@@ -45,11 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase myDatabase;
     private DatabaseReference myDatabaseRef, refLocation;
 
-    Button finale_button;
-
     Long enterTime ;
     Long minuteRange;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,19 +110,14 @@ public class MainActivity extends AppCompatActivity {
                 editText3.getText().clear();
                 editMinuteText.getText().clear();
 
-
                 Toast.makeText(getApplicationContext(),
                         "added to firebase", Toast.LENGTH_LONG).show();
-
             }
 
         });
-
     }
-
     @Override
     protected void onResume() {
-
             Toast.makeText(getApplicationContext(),
                     "onresume", Toast.LENGTH_SHORT).show();
 
@@ -133,30 +125,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
     public void goToDisplayPage(View view){
-
         Intent intent = new Intent(this,fragmented_vote_activity.class);
         Toast.makeText(getApplicationContext(),
                 "video started", Toast.LENGTH_SHORT).show();
         startActivity(intent);
-
-
     }
 
     public void gotodemo(View view){
         Intent demoIntent = new Intent(this,final_demo.class);
-
         startActivity(demoIntent);
     }
-
     @Override
     protected void onStop() {
-
         Toast.makeText(getApplicationContext(),
                 "onstop", Toast.LENGTH_SHORT).show();
-
         super.onStop();
-
     }
-
-
 }

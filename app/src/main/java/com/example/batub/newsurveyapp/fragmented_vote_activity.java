@@ -2,6 +2,7 @@ package com.example.batub.newsurveyapp;
 
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -78,17 +79,16 @@ public class fragmented_vote_activity extends AppCompatActivity {
 
     static Double d3;
     static Double d4;
-
     long timeLeft;
 
     ProgressBar percent1Progress,percent2Progress;
 
     TextView vote1BarPercent, vote2BarPercent ;
     TextView vote1ResultText ,vote2ResultText;
+    FrameLayout myContainer2;
 
     SharedPreferences preferences;
 
-    AlertDialog dialog ,dialog2 ;
     //////////////////////////////////////////////////////////7
     Fragment fragment;
     FragmentTransaction transaction;
@@ -98,8 +98,6 @@ public class fragmented_vote_activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragmented_vote_activity_layout);
 
@@ -113,7 +111,6 @@ public class fragmented_vote_activity extends AppCompatActivity {
         voteButton = (FloatingActionButton) findViewById(R.id.fab5);
 
         ////////////////// DATABASE REFERENCES
-
         voteDatabase= FirebaseDatabase.getInstance();
         questionReference = voteDatabase.getReference().child("deneme");
         voteCountReference = voteDatabase.getReference().child("votecount");
@@ -122,6 +119,14 @@ public class fragmented_vote_activity extends AppCompatActivity {
         questionReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                SharedPreferences mypref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = mypref.edit();
+
+               // editor.putBoolean("answered yes no",false);
+                editor.putBoolean("first time timer",true);
+
+                editor.commit();
 
                 Long enterTime = dataSnapshot.child("enter_time").getValue(Long.class);
                 Long votingRangeMin = dataSnapshot.child("minute_range").getValue(Long.class);
@@ -153,7 +158,6 @@ public class fragmented_vote_activity extends AppCompatActivity {
         }) ;
 
         myContainer =findViewById(R.id.container1);
-
         container2 = findViewById(R.id.container2);
         container2.setVisibility(View.GONE);
 
@@ -168,7 +172,6 @@ public class fragmented_vote_activity extends AppCompatActivity {
                     voteButton.setVisibility(View.GONE);
 
                     manager = getSupportFragmentManager();
-
                     transaction = manager.beginTransaction();
                     transaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_right,R.anim.slide_right,R.anim.slide_right);
 
@@ -186,38 +189,15 @@ public class fragmented_vote_activity extends AppCompatActivity {
         simpleExoPlayerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("on touch","video player touched?");
+                Log.e("on touch","video player clicked/touched");
 
             }
         });
-
     }
 
-    public void closeFragment(View view){
-
-
-        View containerview2 = findViewById(R.id.container2);
-        containerview2.setVisibility(View.GONE);
+    public void closeFragment(View view)
+    {
         onBackPressed();
-      //  voteButton.setVisibility(View.VISIBLE);
-
-        /*View containerview = findViewById(R.id.container1);
-        FragmentTransaction transaction2=manager.beginTransaction();
-        Animation animation = AnimationUtils.loadAnimation(this,R.anim.slide_right);
-        containerview.startAnimation(animation);
-        containerview.setVisibility(View.GONE);
-        transaction2.remove(fragment);
-        manager.popBackStack();
-        transaction2.commit();
-        voteButton.setVisibility(View.VISIBLE);
-            //////////////////////////////////////
-        voteButton.setVisibility(View.GONE);
-        manager = getSupportFragmentManager();
-        transaction = manager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_right,R.anim.slide_right,R.anim.slide_right);
-        transaction.remove(fragment);
-        manager.popBackStack();
-        container2.setVisibility(View.GONE);    */
     }
 
     private void initializePlayer() {
@@ -274,8 +254,43 @@ public class fragmented_vote_activity extends AppCompatActivity {
         if ((Util.SDK_INT <= 23 || player == null)) {
             initializePlayer();
         }
-    }
+        Toast.makeText(getApplicationContext(),
+                "fragment activity on resume", Toast.LENGTH_SHORT).show();
 
+
+        questionReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Long enterTime = dataSnapshot.child("enter_time").getValue(Long.class);
+                Long votingRangeMin = dataSnapshot.child("minute_range").getValue(Long.class);
+
+                long votingRangeMills = ( votingRangeMin * 60000 );
+
+                long phoneTime = Calendar.getInstance().getTimeInMillis();
+
+                long timeDiff =  (phoneTime - enterTime);
+
+                if (votingRangeMills > timeDiff) {
+                    onTime = true;
+                    Log.e("ontime","true");
+
+                    // boolTestView.setVisibility(View.VISIBLE);
+                    voteButton.setVisibility(View.VISIBLE);
+
+                } else if ( votingRangeMills < timeDiff ){
+                    Log.e("ontime","false");
+                    onTime=false;
+                    // boolTestView.setVisibility(View.GONE);
+                    voteButton.setVisibility(View.GONE);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        }) ;
+    }
     @Override
     public void onPause() {
         super.onPause();
@@ -295,15 +310,41 @@ public class fragmented_vote_activity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        voteButton.setVisibility(View.VISIBLE);
+        questionReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Long enterTime = dataSnapshot.child("enter_time").getValue(Long.class);
+                Long votingRangeMin = dataSnapshot.child("minute_range").getValue(Long.class);
+
+                long votingRangeMills = ( votingRangeMin * 60000 );
+
+                long phoneTime = Calendar.getInstance().getTimeInMillis();
+
+                long timeDiff =  (phoneTime - enterTime);
+
+                if (votingRangeMills > timeDiff) {
+                    onTime = true;
+                    Log.e("ontime","true");
+
+                    // boolTestView.setVisibility(View.VISIBLE);
+                    voteButton.setVisibility(View.VISIBLE);
+
+                } else if ( votingRangeMills < timeDiff ){
+                    Log.e("ontime","false");
+                    onTime=false;
+                    // boolTestView.setVisibility(View.GONE);
+                    voteButton.setVisibility(View.GONE);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        }) ;
+        myContainer2 =findViewById(R.id.container2);
+        myContainer2.setVisibility(View.GONE);
 
         Log.e("backpressed","OnBackPressed");
     }
 }
-
-
-/*if (getFragmentManager().getBackStackEntryCount() == 0) {
-            this.finish();
-        } else {
-            getFragmentManager().popBackStack();
-        }*/

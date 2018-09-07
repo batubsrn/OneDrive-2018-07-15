@@ -32,7 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
-
+import java.util.Objects;
 
 public class votingFragment extends Fragment {
 
@@ -42,14 +42,12 @@ public class votingFragment extends Fragment {
     DatabaseReference questionReference , voteCountReference, progressBarReference ;
 
     String question, option1,option2 ;
-
     Long vote1Count,vote2Count ;
 
     ProgressBar pb1 ,pb2 ;
     TextView questionText, vote1percenttext,vote2percenttext;
     Button button1,button2;
     TextView vote1text,vote2text;
-
     TextView timerText;
 
     Boolean onTime;
@@ -68,7 +66,6 @@ public class votingFragment extends Fragment {
     public votingFragment() {
         // Required empty public constructor
     }
-
     /////////////////////////////////////////////////////////
     public void openResults() {
 
@@ -103,7 +100,6 @@ public class votingFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-
                 vote1Count = dataSnapshot.child("vote1").getValue(Long.class);
                 vote2Count = dataSnapshot.child("vote2").getValue(Long.class);
 
@@ -132,7 +128,6 @@ public class votingFragment extends Fragment {
 
                 vote1percenttext.setText("%" + d5Str  );    // percentage display
                 vote2percenttext.setText("%" + d6Str  );    //     "         "
-
             }
 
             @Override
@@ -154,9 +149,7 @@ public class votingFragment extends Fragment {
                 vote2text.setText(option2text);
 
                 questionText.setText(qtext);
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -201,25 +194,16 @@ public class votingFragment extends Fragment {
         questionReference = voteDatabase.getReference().child("deneme");
         voteCountReference= voteDatabase.getReference().child("votecount").child("1");
         /////////////////////////////////////
-
-
-
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext() );
 
         answered = preferences.getBoolean("answered yes no",false);
-        Log.e("timerfirsttime", String.valueOf(timerFirstTime));
 
         timerFirstTime = preferences.getBoolean("first time timer",true);
         Log.e("timerfirsttime", String.valueOf(timerFirstTime));
 
-       /* preferences = getActivity().getSharedPreferences("mypref", Context.MODE_PRIVATE);
-
-        answered = preferences.getBoolean("isAnswered",false);
-*/
         Log.e(" answered",String.valueOf(answered) );
 
         /// Get questions and display them
-
         if(answered){
             openResults();
         }
@@ -253,12 +237,10 @@ public class votingFragment extends Fragment {
 
                     timeLeft = countdownMills;
 
-
-                    timerFirstTime = preferences.getBoolean("first time timer",true);
-                    Log.e("timerfirsttime", String.valueOf(timerFirstTime));
+                   // timerFirstTime = preferences.getBoolean("first time timer",true);
+                   // Log.e("timerfirsttime", String.valueOf(timerFirstTime));
 
                     if (timerFirstTime) {
-
                         new CountDownTimer(timeLeft, 1000) {
                             public void onTick(long millisUntilFinished) {
                                 timerText.setText(String.valueOf(timeLeft / 1000));
@@ -266,29 +248,10 @@ public class votingFragment extends Fragment {
                             }
                             public void onFinish() {
 
-                                View containerview = getActivity().findViewById(R.id.container1);
-
-                               // Animation animation = AnimationUtils.loadAnimation(getActivity(),R.anim.slide_right);
-
-                                containerview.setVisibility(View.GONE);
-
-
-
-                                //  CLOSE FRAGMENT
-                                /*
-
-
-                                View containerview2 = getActivity().findViewById(R.id.container2);
-                                 containerview2.setVisibility(View.GONE);
-
-
-                                containerview.startAnimation(animation);
-
-                                getActivity().onBackPressed();
-                                     */
-
-                              //  ( (fragmented_vote_activity)getActivity() ).closeFragment(fragView);
-
+                                if(getActivity()!=null)
+                                {
+                                    getActivity().onBackPressed();
+                                }
                             }
                         }.start();
 

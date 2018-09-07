@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#4286f4"
+    android:id="@+id/mainFragment"
 
 
     tools:context=".votingFragment">
@@ -114,7 +115,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_marginTop="40dp"
-            android:text="TextView"
             app:layout_constraintStart_toEndOf="@+id/questionTextfrag"
             app:layout_constraintTop_toTopOf="parent" />
 
