@@ -221,13 +221,7 @@ public class fragmented_vote_activity extends AppCompatActivity {
             }
         });
 */
-
-
-
-
-
     }
-
 
 
     private void initializePlayer() {
@@ -255,7 +249,6 @@ public class fragmented_vote_activity extends AppCompatActivity {
                 mediaDataSourceFactory, extractorsFactory, null, null);
 
         player.prepare(mediaSource);
-
 
 
     }
